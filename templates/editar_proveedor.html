@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Editar Proveedor</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/compras.css') }}">
+</head>
+
+<body>
+
+<div class="header">
+
+    <h1>🚚 EDITAR PROVEEDOR</h1>
+
+    <form method="POST">
+
+        <div class="subcard">
+
+            <div class="row">
+
+                <div class="field">
+                    <label>Nombre / Razón Social</label>
+                    <input type="text"
+                           name="nombre"
+                           value="{{ proveedor[1] }}"
+                           required>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="subcard">
+
+            <div class="row">
+
+                <div class="field">
+                    <label>Dirección</label>
+                    <input type="text"
+                           name="direccion"
+                           value="{{ proveedor[2] }}">
+                </div>
+
+                <div class="field">
+                    <label>Distrito</label>
+                    <input type="text"
+                           name="distrito"
+                           value="{{ proveedor[3] }}">
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="subcard" style="text-align:center;">
+
+            <button type="submit">
+                Actualizar Proveedor
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+
+</html>

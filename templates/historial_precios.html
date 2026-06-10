@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de Precios</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/compras.css') }}">
+</head>
+
+<body>
+
+<div class="header">
+
+    <h1>📊 HISTORIAL DE PRECIOS</h1>
+
+    <div class="subcard">
+
+        <form method="POST">
+
+            <div class="row">
+
+                <div class="field">
+
+                    <label>Mostrar por</label>
+
+                    <select name="periodo">
+                        <option value="dia">Diario</option>
+                        <option value="semana">Semanal</option>
+                        <option value="mes">Mensual</option>
+                        <option value="anio">Anual</option>
+                    </select>
+
+                </div>
+
+            </div>
+
+            <br>
+
+            <div style="text-align:center;">
+
+                <button type="submit">
+                    Consultar
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- ================= COMPRAS ================= -->
+
+<div class="subcard">
+
+    <h2>📥 HISTORIAL DE PRECIOS DE COMPRA</h2>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Tipo</th>
+                <th>Precio promedio</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for fila in compras %}
+            <tr>
+                <td>{{ fila[0] }}</td>
+                <td>{{ fila[1] }}</td>
+                <td>S/ {{ "%.2f"|format(fila[2]) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- ================= VENTAS ================= -->
+
+<div class="subcard">
+
+    <h2>📤 HISTORIAL DE PRECIOS DE VENTA</h2>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Tipo</th>
+                <th>Precio promedio</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for fila in ventas %}
+            <tr>
+                <td>{{ fila[0] }}</td>
+                <td>{{ fila[1] }}</td>
+                <td>S/ {{ "%.2f"|format(fila[2]) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- ================= GRÁFICOS ================= -->
+
+<div class="subcard">
+
+    <h2>📈 GRÁFICO DE PRECIOS DE COMPRA</h2>
+
+    <div style="height:350px;">
+        <canvas id="graficoCompras"></canvas>
+    </div>
+
+</div>
+
+<div class="subcard">
+
+    <h2>📉 GRÁFICO DE PRECIOS DE VENTA</h2>
+
+    <div style="height:350px;">
+        <canvas id="graficoVentas"></canvas>
+    </div>
+
+</div>
+
+<!-- ================= BOTÓN FINAL ================= -->
+
+<div class="subcard" style="text-align:center;">
+
+    <button onclick="window.location.href='/'">
+        🏠 Volver al Inicio
+    </button>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script>
+    new Chart(document.getElementById("graficoCompras"), {
+        type: "line",
+        data: {
+            labels: {{ fechas|tojson }},
+            datasets: [
+                {
+                    label: "Comercial",
+                    data: {{ precios_comercial|tojson }},
+                    borderWidth: 3,
+                    borderColor: "blue",
+                    fill: false
+                },
+                {
+                    label: "Pardo",
+                    data: {{ precios_pardo|tojson }},
+                    borderWidth: 3,
+                    borderColor: "green",
+                    fill: false
+                },
+                {
+                    label: "Jumbo",
+                    data: {{ precios_jumbo|tojson }},
+                    borderWidth: 3,
+                    borderColor: "red",
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
+
+<script>
+    new Chart(document.getElementById("graficoVentas"), {
+        type: "line",
+        data: {
+            labels: {{ fechas_venta|tojson }},
+            datasets: [
+                {
+                    label: "Comercial",
+                    data: {{ precios_comercial_venta|tojson }},
+                    borderWidth: 3,
+                    borderColor: "blue",
+                    fill: false
+                },
+                {
+                    label: "Pardo",
+                    data: {{ precios_pardo_venta|tojson }},
+                    borderWidth: 3,
+                    borderColor: "green",
+                    fill: false
+                },
+                {
+                    label: "Jumbo",
+                    data: {{ precios_jumbo_venta|tojson }},
+                    borderWidth: 3,
+                    borderColor: "red",
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<meta charset="UTF-8">
+<title>Detalle de Liquidación de Venta</title>
+
+<style>
+
+body{
+    font-family:'Segoe UI', sans-serif;
+    background:#f4f6f9;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+}
+
+/* TITULOS */
+h1{
+    text-align:center;
+    color:#2c3e50;
+    margin:20px 0;
+}
+
+h2{
+    text-align:center;
+    color:#34495e;
+    margin-top:30px;
+}
+
+/* INFO CABECERA */
+.info{
+    width:60%;
+    margin:auto;
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+    margin-bottom:20px;
+}
+
+.info p{
+    margin:8px 0;
+    font-size:14px;
+}
+
+.label{
+    font-weight:bold;
+    color:#2c3e50;
+}
+
+/* TABLAS */
+table{
+    width:60%;
+    margin:auto;
+    border-collapse:collapse;
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+    margin-bottom:15px;
+}
+
+td{
+    border:1px solid #eee;
+    width:60px;
+    height:30px;
+    text-align:center;
+    font-size:13px;
+}
+
+/* BLOQUE DETALLE */
+.detalle{
+    width:60%;
+    margin:auto;
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+    margin-top:10px;
+}
+
+.detalle p{
+    margin:6px 0;
+    font-size:14px;
+}
+
+hr{
+    border:none;
+    border-top:1px solid #ddd;
+    margin:25px 0;
+}
+
+/* BOTÓN */
+.center{
+    text-align:center;
+    margin-top:25px;
+}
+
+button{
+    padding:10px 18px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#27ae60;
+    color:white;
+    font-size:14px;
+    transition:0.2s;
+}
+
+button:hover{
+    background:#219150;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>LIQUIDACIÓN DE VENTA</h1>
+
+<div class="info">
+    <p><span class="label">Fecha:</span> {{ cabecera[0] }}</p>
+    <p><span class="label">Cliente:</span> {{ cabecera[1] }}</p>
+    <p><span class="label">Importe Total:</span> S/ {{ cabecera[2] }}</p>
+</div>
+
+<hr>
+
+{% for d in detalles %}
+
+<h2>{{ d.tipo_huevo }}</h2>
+
+<table>
+{% for fila in d.tabla %}
+<tr>
+    {% for peso in fila %}
+    <td>{{ peso }}</td>
+    {% endfor %}
+</tr>
+{% endfor %}
+</table>
+
+<div class="detalle">
+
+<p><b>Precio Kg:</b> {{ d.precio_kg }}</p>
+<p><b>Peso Total:</b> {{ d.peso_total }}</p>
+<p><b>Cantidad de Paquetes:</b> {{ d.cantidad_paquetes }}</p>
+<p><b>Importe:</b> S/ {{ d.importe }}</p>
+
+</div>
+
+<hr>
+
+{% endfor %}
+
+<div class="center">
+    <button onclick="window.location.href='/'">
+        🏠 Volver al Inicio
+    </button>
+</div>
+
+</div>
+
+</body>
+</html>

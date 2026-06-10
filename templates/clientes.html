@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Clientes</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI, sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    padding:30px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom:30px;
+}
+
+h1{
+    color:#2c3e50;
+    margin-bottom:20px;
+}
+
+h2{
+    color:#2c3e50;
+    margin-bottom:15px;
+}
+
+label{
+    font-weight:600;
+    color:#555;
+    display:block;
+    margin-bottom:5px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    margin-bottom:15px;
+    transition:0.3s;
+}
+
+input:focus{
+    border-color:#3498db;
+    outline:none;
+    box-shadow:0 0 5px rgba(52,152,219,0.4);
+}
+
+.btn{
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+    transition:0.3s;
+}
+
+.btn-guardar{
+    background:#27ae60;
+    color:white;
+}
+
+.btn-guardar:hover{
+    background:#219150;
+}
+
+.btn-volver{
+    background:#34495e;
+    color:white;
+}
+
+.btn-volver:hover{
+    background:#2c3e50;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    overflow:hidden;
+    border-radius:10px;
+}
+
+thead{
+    background:#3498db;
+    color:white;
+}
+
+th, td{
+    padding:12px;
+    text-align:left;
+}
+
+tbody tr:nth-child(even){
+    background:#f8f9fa;
+}
+
+tbody tr:hover{
+    background:#eaf4ff;
+}
+
+.acciones a{
+    text-decoration:none;
+    padding:8px 12px;
+    border-radius:6px;
+    color:white;
+    font-size:14px;
+}
+
+.editar{
+    background:#f39c12;
+}
+
+.eliminar{
+    background:#e74c3c;
+}
+
+.editar:hover{
+    background:#d68910;
+}
+
+.eliminar:hover{
+    background:#c0392b;
+}
+
+.centro{
+    text-align:center;
+    margin-top:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>📋 Registro de Clientes</h1>
+
+        <form method="POST">
+
+            <label>Nombre / Razón Social</label>
+            <input type="text" name="nombre" required>
+
+            <label>Dirección</label>
+            <input type="text" name="direccion">
+
+            <label>Distrito</label>
+            <input type="text" name="distrito">
+
+            <button type="submit" class="btn btn-guardar">
+                Guardar Cliente
+            </button>
+
+        </form>
+
+    </div>
+
+    <div class="card">
+
+        <h2>👥 Clientes Registrados</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Distrito</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for c in clientes %}
+            <tr>
+
+                <td>{{ c[0] }}</td>
+                <td>{{ c[1] }}</td>
+                <td>{{ c[2] }}</td>
+                <td>{{ c[3] }}</td>
+
+                <td class="acciones">
+
+                    <a href="/editar_cliente/{{ c[0] }}"
+                       class="editar">
+                        ✏ Editar
+                    </a>
+
+                    <a href="/eliminar_cliente/{{ c[0] }}"
+                       class="eliminar"
+                       onclick="return confirm('¿Eliminar cliente?')">
+                        🗑 Eliminar
+                    </a>
+
+                </td>
+
+            </tr>
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="centro">
+
+        <button class="btn btn-volver"
+                onclick="window.location.href='/'">
+
+            🏠 Volver al Inicio
+
+        </button>
+
+    </div>
+
+</div>
+
+</body>
+</html>

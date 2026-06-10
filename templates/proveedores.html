@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Proveedores</title>
+
+<style>
+
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI, sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    padding:30px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+/* CARD IGUAL QUE COMPETIDORES */
+.card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom:30px;
+}
+
+/* TITULOS */
+h1{
+    color:#2c3e50;
+    margin-bottom:20px;
+}
+
+h2{
+    color:#2c3e50;
+    margin-bottom:15px;
+}
+
+/* LABELS */
+label{
+    font-weight:600;
+    color:#555;
+    display:block;
+    margin-bottom:5px;
+}
+
+/* INPUTS IGUAL QUE COMPETIDORES */
+input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    margin-bottom:15px;
+    transition:0.3s;
+}
+
+input:focus{
+    border-color:#3498db;
+    outline:none;
+    box-shadow:0 0 5px rgba(52,152,219,0.4);
+}
+
+/* BOTONES */
+.btn{
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+    transition:0.3s;
+}
+
+.btn-guardar{
+    background:#27ae60;
+    color:white;
+}
+
+.btn-guardar:hover{
+    background:#219150;
+}
+
+.btn-volver{
+    background:#34495e;
+    color:white;
+}
+
+.btn-volver:hover{
+    background:#2c3e50;
+}
+
+/* TABLA IGUAL */
+table{
+    width:100%;
+    border-collapse:collapse;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+thead{
+    background:#3498db;
+    color:white;
+}
+
+th, td{
+    padding:12px;
+    text-align:left;
+}
+
+tbody tr:nth-child(even){
+    background:#f8f9fa;
+}
+
+tbody tr:hover{
+    background:#eaf4ff;
+}
+
+/* ACCIONES */
+.acciones{
+    display:flex;
+    gap:10px;
+}
+
+.acciones a{
+    text-decoration:none;
+    padding:8px 12px;
+    border-radius:6px;
+    color:white;
+    font-size:14px;
+}
+
+.editar{
+    background:#f39c12;
+}
+
+.editar:hover{
+    background:#d68910;
+}
+
+.eliminar{
+    background:#e74c3c;
+}
+
+.eliminar:hover{
+    background:#c0392b;
+}
+
+/* CENTRADO */
+.centro{
+    text-align:center;
+    margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- FORM -->
+    <div class="card">
+
+        <h1>🏢 Registro de Proveedores</h1>
+
+        <form method="POST">
+
+            <label>Nombre / Razón Social</label>
+            <input type="text" name="nombre" required>
+
+            <label>Dirección</label>
+            <input type="text" name="direccion">
+
+            <label>Distrito</label>
+            <input type="text" name="distrito">
+
+            <button type="submit" class="btn btn-guardar">
+                Guardar Proveedor
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="card">
+
+        <h2>📋 Proveedores Registrados</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Distrito</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for p in proveedores %}
+            <tr>
+
+                <td>{{ p[0] }}</td>
+                <td>{{ p[1] }}</td>
+                <td>{{ p[2] }}</td>
+                <td>{{ p[3] }}</td>
+
+                <td class="acciones">
+
+                    <a href="/editar_proveedor/{{ p[0] }}" class="editar">
+                        ✏ Editar
+                    </a>
+
+                    <a href="/eliminar_proveedor/{{ p[0] }}" class="eliminar"
+                       onclick="return confirm('¿Eliminar proveedor?')">
+                        🗑 Eliminar
+                    </a>
+
+                </td>
+
+            </tr>
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- BOTÓN -->
+    <div class="centro">
+
+        <button class="btn btn-volver"
+                onclick="window.location.href='/'">
+
+            🏠 Volver al Inicio
+
+        </button>
+
+    </div>
+
+</div>
+
+</body>
+</html>

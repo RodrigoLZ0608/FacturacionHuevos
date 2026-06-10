@@ -1,0 +1,323 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Liquidación de Compra</title>
+
+    <link rel="stylesheet"
+      href="{{ url_for('static', filename='css/compras.css') }}">
+
+</head>
+
+<body>
+
+<div class="header">
+
+    <h1>🥚 LIQUIDACIÓN DE COMPRA</h1>
+
+    <div class="subcard">
+
+        <div class="row">
+
+            <div class="field">
+                <label>Fecha</label>
+                <input type="date" id="fecha" readonly>
+            </div>
+
+            <div class="field">
+                <label>Proveedor</label>
+
+                <select id="proveedor">
+                    <option value="">Seleccione un proveedor</option>
+
+                    {% for p in proveedores %}
+                    <option value="{{ p[0] }}">
+                        {{ p[0] }}
+                    </option>
+                    {% endfor %}
+
+                </select>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="subcard">
+
+        <h2>Tipos de Huevo</h2>
+
+        <div class="checks">
+
+            <label><input type="checkbox" id="chkComercial"> Comercial</label>
+            <label><input type="checkbox" id="chkJumbo"> Jumbo</label>
+            <label><input type="checkbox" id="chkPardo"> Pardo</label>
+
+        </div>
+
+        <button type="button" onclick="mostrarTablas()">
+            Generar Liquidación
+        </button>
+
+    </div>
+
+</div>
+
+<div id="contenedorTablas" style="display:none;">
+
+    <!-- COMERCIAL -->
+    <div id="seccionComercial" style="display:none;">
+
+        <h2>COMERCIAL</h2>
+
+        <div class="contenido-tabla">
+
+            <table id="tablaComercial">
+
+                <thead>
+                    <tr>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                    </tr>
+                </thead>
+
+                <tbody id="bodyComercial">
+                </tbody>
+
+            </table>
+
+            <div class="pesos-rapidos">
+
+                <button type="button" onclick="agregarPesoAutomatico(11.10,'comercial')">11.10</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.20,'comercial')">11.20</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.30,'comercial')">11.30</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.40,'comercial')">11.40</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.50,'comercial')">11.50</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.60,'comercial')">11.60</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.70,'comercial')">11.70</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.80,'comercial')">11.80</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.90,'comercial')">11.90</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.00,'comercial')">12.00</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.10,'comercial')">12.10</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.20,'comercial')">12.20</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.30,'comercial')">12.30</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.40,'comercial')">12.40</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.50,'comercial')">12.50</button>
+
+            </div>
+
+        </div>
+
+        <br>
+
+        Precio Kg Comercial:
+
+        <input type="number"
+               id="precioComercial"
+               step="0.01">
+
+        <br><br>
+
+        Peso Total Comercial:
+
+        <input type="number"
+               id="pesoTotalComercial"
+               readonly>
+
+        <br><br>
+
+        Importe Comercial:
+
+        <input type="number"
+               id="importeComercial"
+               readonly>
+
+    </div>
+
+    <!-- JUMBO -->
+    <div id="seccionJumbo" style="display:none;">
+
+        <h2>JUMBO</h2>
+
+        <div class="contenido-tabla">
+
+            <table id="tablaJumbo">
+
+                <thead>
+                    <tr>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                    </tr>
+                </thead>
+
+                <tbody id="bodyJumbo">
+                </tbody>
+
+            </table>
+
+            <div class="pesos-rapidos">
+
+                <button type="button" onclick="agregarPesoAutomatico(11.10,'jumbo')">11.10</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.20,'jumbo')">11.20</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.30,'jumbo')">11.30</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.40,'jumbo')">11.40</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.50,'jumbo')">11.50</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.60,'jumbo')">11.60</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.70,'jumbo')">11.70</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.80,'jumbo')">11.80</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.90,'jumbo')">11.90</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.00,'jumbo')">12.00</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.10,'jumbo')">12.10</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.20,'jumbo')">12.20</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.30,'jumbo')">12.30</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.40,'jumbo')">12.40</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.50,'jumbo')">12.50</button>
+
+            </div>
+
+        </div>
+
+        <br>
+
+        Precio Kg Jumbo:
+
+        <input type="number"
+               id="precioJumbo"
+               step="0.01">
+
+        <br><br>
+
+        Peso Total Jumbo:
+
+        <input type="number"
+               id="pesoTotalJumbo"
+               readonly>
+
+        <br><br>
+
+        Importe Jumbo:
+
+        <input type="number"
+               id="importeJumbo"
+               readonly>
+
+    </div>
+
+    <!-- PARDO -->
+    <div id="seccionPardo" style="display:none;">
+
+        <h2>PARDO</h2>
+
+        <div class="contenido-tabla">
+
+            <table id="tablaPardo">
+
+                <thead>
+                    <tr>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                    </tr>
+                </thead>
+
+                <tbody id="bodyPardo">
+                </tbody>
+
+            </table>
+
+            <div class="pesos-rapidos">
+
+                <button type="button" onclick="agregarPesoAutomatico(11.10,'pardo')">11.10</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.20,'pardo')">11.20</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.30,'pardo')">11.30</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.40,'pardo')">11.40</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.50,'pardo')">11.50</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.60,'pardo')">11.60</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.70,'pardo')">11.70</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.80,'pardo')">11.80</button>
+                <button type="button" onclick="agregarPesoAutomatico(11.90,'pardo')">11.90</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.00,'pardo')">12.00</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.10,'pardo')">12.10</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.20,'pardo')">12.20</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.30,'pardo')">12.30</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.40,'pardo')">12.40</button>
+                <button type="button" onclick="agregarPesoAutomatico(12.50,'pardo')">12.50</button>
+
+            </div>
+
+        </div>
+
+        <br>
+
+        Precio Kg Pardo:
+
+        <input type="number"
+               id="precioPardo"
+               step="0.01">
+
+        <br><br>
+
+        Peso Total Pardo:
+
+        <input type="number"
+               id="pesoTotalPardo"
+               readonly>
+
+        <br><br>
+
+        Importe Pardo:
+
+        <input type="number"
+               id="importePardo"
+               readonly>
+
+    </div>
+
+</div>
+
+<div class="subcard">
+
+    <h2>TOTAL GENERAL</h2>
+
+    <div class="total-content">
+
+        <input type="number" id="importeGeneral" readonly>
+
+        <button id="btnGuardar">
+            Guardar Liquidación
+        </button>
+
+    </div>
+    
+    
+
+</div>
+
+<div class="centro">
+
+    <button class="btn btn-volver"
+            onclick="window.location.href='/'">
+
+        🏠 Volver al Inicio
+
+    </button>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/compras.js') }}"></script>
+
+</body>
+</html>

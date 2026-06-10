@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Historial de Liquidaciones de Ventas</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/compras.css') }}">
+</head>
+
+<body>
+
+<div class="header">
+
+    <h1>📦 HISTORIAL DE VENTAS</h1>
+
+</div>
+
+<div class="subcard">
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Cliente</th>
+                <th>Importe Total</th>
+                <th>Acciones</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for v in ventas %}
+
+            <tr>
+
+                <td>{{ v[0] }}</td>
+                <td>{{ v[1] }}</td>
+                <td>{{ v[2] }}</td>
+                <td>{{ v[3] }}</td>
+
+                <td>
+
+                    <a href="/ver_venta/{{ v[0] }}">
+                        Ver Detalle
+                    </a>
+
+                    <br><br>
+
+                    <a href="/eliminar_venta/{{ v[0] }}"
+                       onclick="return confirm('¿Eliminar venta?')">
+                        Eliminar
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div class="subcard" style="text-align:center;">
+
+    <button onclick="window.location.href='/'">
+        🏠 Volver al Inicio
+    </button>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Detalle de Liquidación de Compra</title>
+
+<style>
+
+body{
+    font-family:'Segoe UI',sans-serif;
+    background:#f4f6f9;
+    padding:25px;
+    color:#2c3e50;
+}
+
+/* TITULO */
+h1{
+    text-align:center;
+    margin-bottom:20px;
+    color:#2c3e50;
+}
+
+/* CABECERA */
+.cabecera{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:15px;
+    border-radius:12px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.08);
+    margin-bottom:20px;
+}
+
+.info{
+    margin:8px 0;
+    font-size:15px;
+}
+
+/* DETALLES */
+.detalle{
+    max-width:900px;
+    margin:15px auto;
+    background:white;
+    padding:15px;
+    border-radius:12px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.08);
+}
+
+.detalle h2{
+    color:#3498db;
+    margin-bottom:10px;
+}
+
+/* TABLA */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:12px;
+    overflow:hidden;
+    border-radius:8px;
+}
+
+td{
+    border:1px solid #e0e0e0;
+    width:60px;
+    height:32px;
+    text-align:center;
+    background:#fff;
+}
+
+/* FILAS ZEBRA */
+tr:nth-child(even) td{
+    background:#f8f9fa;
+}
+
+/* DATOS */
+.datos{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:8px;
+    font-size:14px;
+}
+
+.datos div{
+    background:#f4f6f9;
+    padding:8px;
+    border-radius:8px;
+}
+
+/* BOTON */
+button{
+    background:#3498db;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+button:hover{
+    background:#2c80b4;
+}
+
+.center{
+    text-align:center;
+    margin-top:25px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🥚 LIQUIDACIÓN DE COMPRA</h1>
+
+<div class="cabecera">
+
+    <div class="info"><b>Fecha:</b> {{ cabecera[0] }}</div>
+    <div class="info"><b>Proveedor:</b> {{ cabecera[1] }}</div>
+    <div class="info"><b>Importe Total:</b> S/ {{ cabecera[2] }}</div>
+
+</div>
+
+{% for d in detalles %}
+
+<div class="detalle">
+
+    <h2>{{ d.tipo_huevo }}</h2>
+
+    <table>
+        {% for fila in d.tabla %}
+        <tr>
+            {% for peso in fila %}
+            <td>{{ peso }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div class="datos">
+
+        <div><b>Precio Kg:</b> {{ d.precio_kg }}</div>
+        <div><b>Peso Total:</b> {{ d.peso_total }}</div>
+        <div><b>Paquetes:</b> {{ d.cantidad_paquetes }}</div>
+        <div><b>Importe:</b> S/ {{ d.importe }}</div>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+<div class="center">
+
+    <button onclick="window.location.href='/'">
+        🏠 Volver al Inicio
+    </button>
+
+</div>
+
+</body>
+</html>

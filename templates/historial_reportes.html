@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de Reportes</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/compras.css') }}">
+</head>
+
+<body>
+
+<div class="header">
+
+    <h1>📊 HISTORIAL DE REPORTES</h1>
+
+</div>
+
+<div class="subcard">
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Inversión Total</th>
+                <th>Venta Total</th>
+                <th>Ganancia</th>
+                <th>Acciones</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for r in reportes %}
+
+            <tr>
+
+                <td>{{ r[0] }}</td>
+                <td>{{ r[1] }}</td>
+                <td>S/ {{ "%.2f"|format(r[2]) }}</td>
+                <td>S/ {{ "%.2f"|format(r[3]) }}</td>
+                <td>S/ {{ "%.2f"|format(r[4]) }}</td>
+
+                <td>
+
+                    <a href="/ver_reporte/{{ r[0] }}">
+                        Ver detalles
+                    </a>
+
+                    <br><br>
+
+                    <a href="/eliminar_reporte/{{ r[0] }}"
+                       onclick="return confirm('¿Desea eliminar este reporte?')">
+                        Eliminar
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div class="subcard" style="text-align:center;">
+
+    <button onclick="window.location.href='/'">
+        🏠 Volver al Inicio
+    </button>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Reportes</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/reportes.css') }}">
+
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <!-- COLUMNA COMPRAS -->
+    <div class="columna">
+
+        <h1>REPORTE DE COMPRAS</h1>
+
+        <form method="POST">
+
+            <input
+            type="hidden"
+            name="accion"
+            value="compras">
+
+            Fecha Compras:
+
+            <input
+            type="date"
+            name="fecha_compra"
+            required>
+
+            <button type="submit">
+                Generar Compras
+            </button>
+
+        </form>
+
+        <br>
+
+        {% if proveedores %}
+
+        <div class="encabezado">
+
+            <div>PROVEEDOR</div>
+
+            <div>COMERCIAL</div>
+
+            <div>PARDO</div>
+
+            <div>JUMBO</div>
+
+            <div>TOTAL PROVEEDOR</div>
+
+        </div>
+
+        {% for nombre,p in proveedores.items() %}
+
+        <div class="fila">
+
+            <div class="nombre">
+
+                {{ nombre }}
+
+            </div>
+
+            <div class="tipo">
+
+                <div>{{ p["Comercial"]["peso"] }} Kg</div>
+
+                <div>S/ {{ p["Comercial"]["precio"] }}</div>
+
+                <div>S/ {{ p["Comercial"]["importe"] }}</div>
+
+                <div>{{ p["Comercial"]["paquetes"] }} pqts</div>
+
+            </div>
+
+            <div class="tipo">
+
+                <div>{{ p["Pardo"]["peso"] }} Kg</div>
+
+                <div>S/ {{ p["Pardo"]["precio"] }}</div>
+
+                <div>S/ {{ p["Pardo"]["importe"] }}</div>
+
+                <div>{{ p["Pardo"]["paquetes"] }} pqts</div>
+
+            </div>
+
+            <div class="tipo">
+
+                <div>{{ p["Jumbo"]["peso"] }} Kg</div>
+
+                <div>S/ {{ p["Jumbo"]["precio"] }}</div>
+
+                <div>S/ {{ p["Jumbo"]["importe"] }}</div>
+
+                <div>{{ p["Jumbo"]["paquetes"] }} pqts</div>
+
+            </div>
+
+            <div class="totalProveedor">
+
+                <div>{{ "%.2f"|format(p["peso_total"]) }} Kg</div>
+
+                <div>S/ {{ "%.2f"|format(p["importe_total"]) }}</div>
+
+                <div>{{ p["paquetes_total"] }} pqts</div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+        <h2>TOTALES DE COMPRAS</h2>
+
+        <div class="fila">
+            <div class="proveedor">Peso</div>
+            <div class="tipo">{{ peso_comercial }} Kg</div>
+            <div class="tipo">{{ peso_pardo }} Kg</div>
+            <div class="tipo">{{ peso_jumbo }} Kg</div>
+            <div class="totalProveedor">{{ "%.2f"|format(peso_total_dia) }} Kg</div>
+        </div>
+
+        <div class="fila">
+            <div class="proveedor">Inversion Total</div>
+            <div class="tipo">S/ {{importe_comercial}}</div>
+            <div class="tipo">S/ {{importe_pardo}}</div>
+            <div class="tipo">S/ {{importe_jumbo }}</div>
+            <div class="totalProveedor"> S/ {{importe_total_dia }}</div>
+        </div>  
+
+        <div class="fila">
+            <div class="proveedor">Paquetes</div>
+            <div class="tipo">{{ paquetes_comercial }}</div>
+            <div class="tipo">{{ paquetes_pardo }}</div>
+            <div class="tipo">{{ paquetes_jumbo }}</div>
+            <div class="totalProveedor">{{ paquetes_total_dia }}</div>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+
+    <!-- COLUMNA VENTAS -->
+    <div class="columna">
+
+        <h1>REPORTE DE VENTAS</h1>
+
+        <form method="POST">
+
+            <input
+            type="hidden"
+            name="accion"
+            value="ventas">
+
+            Fecha Ventas:
+
+            <input
+            type="date"
+            name="fecha_venta"
+            required>
+
+            <button type="submit">
+                Generar Ventas
+            </button>
+
+        </form>
+
+        <br>
+
+        {% if clientes %}
+
+        <div class="encabezado">
+
+            <div>CLIENTE</div>
+
+            <div>COMERCIAL</div>
+
+            <div>PARDO</div>
+
+            <div>JUMBO</div>
+
+            <div>TOTAL CLIENTE</div>
+
+        </div>
+
+        {% for nombre,p in clientes.items() %}
+
+        <div class="fila">
+
+            <div class="nombre">
+
+                {{ nombre }}
+
+            </div>
+
+            <div class="tipo">
+
+                <div>{{ p["Comercial"]["peso"] }} Kg</div>
+
+                <div>S/ {{ p["Comercial"]["precio"] }}</div>
+
+                <div>S/ {{ p["Comercial"]["importe"] }}</div>
+
+                <div>{{ p["Comercial"]["paquetes"] }} pqts</div>
+
+            </div>
+
+            <div class="tipo">
+
+                <div>{{ p["Pardo"]["peso"] }} Kg</div>
+
+                <div>S/ {{ p["Pardo"]["precio"] }}</div>
+
+                <div>S/ {{ p["Pardo"]["importe"] }}</div>
+
+                <div>{{ p["Pardo"]["paquetes"] }} pqts</div>
+
+            </div>
+
+            <div class="tipo">
+
+                <div>{{ p["Jumbo"]["peso"] }} Kg</div>
+
+                <div>S/ {{ p["Jumbo"]["precio"] }}</div>
+
+                <div>S/ {{ p["Jumbo"]["importe"] }}</div>
+
+                <div>{{ p["Jumbo"]["paquetes"] }} pqts</div>
+
+            </div>
+
+            <div class="totalCliente">
+
+                <div>{{ "%.2f"|format(p["peso_total"]) }} Kg</div>
+
+                <div>S/ {{ "%.2f"|format(p["importe_total"]) }}</div>
+
+                <div>{{ p["paquetes_total"] }} pqts</div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+        <h2>TOTALES DE VENTAS</h2>
+
+            <div class="fila">
+                <div class="proveedor">Peso</div>
+                <div class="tipo">{{ peso_comercial_venta }} Kg</div>
+                <div class="tipo">{{ peso_pardo_venta }} Kg</div>
+                <div class="tipo">{{ peso_jumbo_venta }} Kg</div>
+                <div class="totalProveedor">{{ "%.2f"|format(peso_total_dia) }} Kg</div>
+            </div>
+
+            <div class="fila">
+                <div class="proveedor">Venta Total</div>
+                <div class="tipo">S/ {{ importe_comercial_venta }}</div>
+                <div class="tipo">S/ {{ importe_pardo_venta }}</div>
+                <div class="tipo">S/ {{ importe_jumbo_venta }}</div>
+                <div class="totalProveedor">S/ {{ importe_total_venta }}</div>
+            </div>
+
+            <div class="fila">
+                <div class="proveedor">Paquetes</div>
+                <div class="tipo">{{ paquetes_comercial_venta }}</div>
+                <div class="tipo">{{ paquetes_pardo_venta }}</div>
+                <div class="tipo">{{ paquetes_jumbo_venta }}</div>
+                <div class="totalProveedor">{{ paquetes_total_venta }}</div>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<div class="columna resumen">
+
+    <h1>RESUMEN ECONÓMICO</h1>
+
+    <form method="POST">
+
+        <input type="hidden"
+            name="accion"
+            value="resumen">
+
+        <input type="hidden"
+            name="fecha_compra"
+            value="{{ fecha_compra }}">
+
+        <input type="hidden"
+            name="fecha_venta"
+            value="{{ fecha_venta }}">
+
+        Costo por paquete:
+
+        <input
+            type="number"
+            step="0.01"
+            min="0"
+            name="costo_flete"
+            value="{{ costo_flete }}"
+            required>
+
+        <button type="submit">
+            Calcular Resumen Económico
+        </button>
+
+    </form>
+
+    <form method="POST">
+
+        <input type="hidden"
+            name="accion"
+            value="guardar_reporte">
+
+        <button type="submit">
+            Guardar Reporte
+        </button>
+
+    </form>
+
+    <br>
+
+    {% if accion_actual == "resumen" %}
+
+    <table border="1">
+
+    <tr>
+        <th>Concepto</th>
+        <th>Valor</th>
+    </tr>
+
+    <tr>
+        <td>Ganancia Bruta</td>
+        <td>S/ {{ "%.2f"|format(ganancia_bruta) }}</td>
+    </tr>
+
+    <tr>
+        <td>Costo por paquete</td>
+        <td>S/ {{ "%.2f"|format(costo_flete) }}</td>
+    </tr>
+
+    <tr>
+        <td>Flete</td>
+        <td>S/ {{ "%.2f"|format(flete) }}</td>
+    </tr>
+
+    <tr>
+        <td>Ganancia</td>
+        <td>S/ {{ "%.2f"|format(ganancia) }}</td>
+    </tr>
+
+    <tr>
+        <td>% Ganancia Bruta</td>
+        <td>{{ "%.2f"|format(porcentaje_ganancia_bruta) }} %</td>
+    </tr>
+
+    <tr>
+        <td>% Ganancia respecto a inversión</td>
+        <td>{{ "%.2f"|format(porcentaje_ganancia_inversion) }} %</td>
+    </tr>
+
+    <tr>
+        <td>% Flete / Ganancia Bruta</td>
+        <td>{{ "%.2f"|format(porcentaje_flete_ganancia_bruta) }} %</td>
+    </tr>
+
+    <tr>
+        <td>% Flete / Compras</td>
+        <td>{{ "%.2f"|format(porcentaje_flete_compras) }} %</td>
+    </tr>
+
+    <tr>
+        <td>% Ganancia / Ganancia Bruta</td>
+        <td>{{ "%.2f"|format(porcentaje_ganancia_ganancia_bruta) }} %</td>
+    </tr>
+
+    <tr>
+        <td>Diferencia Kg</td>
+        <td>{{ "%.2f"|format(diferencia_kg) }} Kg</td>
+    </tr>
+
+    <tr>
+        <td>Precio Promedio</td>
+        <td>S/ {{ "%.2f"|format(precio_promedio) }}</td>
+    </tr>
+
+    <tr>
+        <td>Pérdida</td>
+        <td>S/ {{ "%.2f"|format(perdida) }}</td>
+    </tr>
+
+    </table>
+
+    {% endif %}
+
+    <div style="text-align:center;">
+
+        <button onclick="window.location.href='/'">
+
+            🏠 Volver al Inicio
+
+        </button>
+
+</div>
+
+</body>
+
+</html>
