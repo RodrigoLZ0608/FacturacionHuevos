@@ -10,11 +10,12 @@ import os
 
 
 def conectar_bd():
-    return psycopg2.connect(
-        os.environ.get("DATABASE_URL"),
-        sslmode="require"
-    )
+    db_url = os.environ.get("DATABASE_URL")
 
+    if not db_url:
+        raise Exception("DATABASE_URL no configurada en Render")
+
+    return psycopg2.connect(db_url, sslmode="require")
 app = Flask(__name__)
 app.secret_key = "facturacion_huevos"
 
