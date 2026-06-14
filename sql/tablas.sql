@@ -26,7 +26,7 @@ INSERT INTO TipoHuevo(nombre) VALUES ('Pardo');
 --------------------------------------------------
 
 CREATE TABLE LiquidacionCompra(
-    id SERIAL PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY ,
     fecha_compra DATE NOT NULL,
     proveedor_id INTEGER NOT NULL,
     importe_total REAL NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE LiquidacionCompra(
 );
 
 CREATE TABLE DetalleCompra(
-    id SERIAL PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY ,
     liquidacion_compra_id INTEGER NOT NULL,
     tipo_huevo_id INTEGER NOT NULL,
     precio_kg REAL NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE DetalleCompra(
 );
 
 CREATE TABLE PesoPaqueteCompra(
-    id SERIAL PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY ,
     detalle_compra_id INTEGER NOT NULL,
     peso REAL NOT NULL,
     posicion INTEGER,
@@ -67,7 +67,7 @@ CREATE TABLE PesoPaqueteCompra(
 --------------------------------------------------
 
 CREATE TABLE LiquidacionVenta(
-    id SERIAL PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY ,
     fecha_venta DATE NOT NULL,
     cliente_id INTEGER NOT NULL,
     importe_total REAL NOT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE LiquidacionVenta(
 );
 
 CREATE TABLE DetalleVenta(
-    id SERIAL PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY ,
     liquidacion_venta_id INTEGER NOT NULL,
     tipo_huevo_id INTEGER NOT NULL,
     precio_kg REAL NOT NULL,
@@ -95,7 +95,7 @@ CREATE TABLE DetalleVenta(
 );
 
 CREATE TABLE PesoPaqueteVenta(
-    id SERIAL PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY ,
     detalle_venta_id INTEGER NOT NULL,
     peso REAL NOT NULL,
     posicion INTEGER,
@@ -105,14 +105,14 @@ CREATE TABLE PesoPaqueteVenta(
 );
 
 CREATE TABLE Competidores(
-    id SERIAL PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY ,
     nombre TEXT NOT NULL,
     direccion TEXT,
     distrito TEXT
 );
 
 CREATE TABLE IF NOT EXISTS Reportes(
-    id SERIAL PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY ,
     fecha_reporte TEXT,
 
     fecha_compra TEXT,

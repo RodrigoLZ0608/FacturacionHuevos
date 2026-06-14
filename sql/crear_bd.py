@@ -1,7 +1,8 @@
 import psycopg2
 
 conexion = psycopg2.connect(
-    "postgresql://rodrigo:FsWz8sodqVNzWZL0JPXJ95qBSzHUNHi0@dpg-d8keqrsm0tmc73cju330-a.virginia-postgres.render.com/facturacion_huevos"
+    "postgresql://rodrigo:FsWz8sodqVNzWZL0JPXJ95qBSzHUNHi0@dpg-d8keqrsm0tmc73cju330-a.virginia-postgres.render.com/facturacion_huevos",
+    sslmode="require"
 )
 
 cursor = conexion.cursor()

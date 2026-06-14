@@ -10,9 +10,9 @@ import os
 
 
 def conectar_bd():
-
     return psycopg2.connect(
-        os.environ.get("DATABASE_URL")
+        os.environ.get("DATABASE_URL"),
+        sslmode="require"
     )
 
 app = Flask(__name__)
