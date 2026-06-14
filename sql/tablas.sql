@@ -43,6 +43,7 @@ CREATE TABLE DetalleCompra(
     peso_total REAL NOT NULL,
     cantidad_paquetes INTEGER NOT NULL,
     importe REAL NOT NULL,
+    columnas INTEGER,
 
     FOREIGN KEY(liquidacion_compra_id)
     REFERENCES LiquidacionCompra(id),
@@ -55,6 +56,7 @@ CREATE TABLE PesoPaqueteCompra(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     detalle_compra_id INTEGER NOT NULL,
     peso REAL NOT NULL,
+    posicion INTEGER,
 
     FOREIGN KEY(detalle_compra_id)
     REFERENCES DetalleCompra(id)
@@ -83,6 +85,8 @@ CREATE TABLE DetalleVenta(
     cantidad_paquetes INTEGER NOT NULL,
     importe REAL NOT NULL,
 
+    columnas INTEGER,
+
     FOREIGN KEY(liquidacion_venta_id)
     REFERENCES LiquidacionVenta(id),
 
@@ -94,6 +98,7 @@ CREATE TABLE PesoPaqueteVenta(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     detalle_venta_id INTEGER NOT NULL,
     peso REAL NOT NULL,
+    posicion INTEGER,
 
     FOREIGN KEY(detalle_venta_id)
     REFERENCES DetalleVenta(id)

@@ -1,255 +1,392 @@
-console.log("COMPRAS JS CARGADO");
-document.addEventListener("DOMContentLoaded", () => {
+    console.log("COMPRAS JS CARGADO");
 
-    const hoy = new Date();
+    let columnasActuales = {
+        comercial:1,
+        jumbo:1,
+        pardo:1
+    };
 
-    const fechaLocal = hoy.getFullYear() + "-" +
-        String(hoy.getMonth() + 1).padStart(2, "0") + "-" +
-        String(hoy.getDate()).padStart(2, "0");
+    function generarTabla(id, clase){
 
-    document.getElementById("fecha").value = fechaLocal;
+        let body = document.getElementById(id);
 
-});
-function generarTabla(id, clase){
+        body.innerHTML = "";
 
-    let body = document.getElementById(id);
+        for(let i=0;i<20;i++){
 
-    for(let i=0;i<20;i++){
-
-        let fila = "<tr>";
-
-        for(let j=0;j<6;j++){
-
-            fila += `
-            <td>
-            <input type="number"
-            class="peso ${clase}"
-            step="0.01">
-            </td>
+            body.innerHTML += `
+            <tr>
+                <td>
+                    <input
+                        type="number"
+                        class="peso ${clase}"
+                        step="0.01">
+                </td>
+            </tr>
             `;
         }
-
-        fila += "</tr>";
-
-        body.innerHTML += fila;
     }
-}
 
-generarTabla("bodyComercial","comercial");
-generarTabla("bodyJumbo","jumbo");
-generarTabla("bodyPardo","pardo");
-function calcular(){
+    function agregarColumna(idTabla, clase){
 
-let totalComercial=0;
-let totalJumbo=0;
-let totalPardo=0;
+        let tabla = document.getElementById(idTabla);
+        let filas = tabla.querySelectorAll("tbody tr");
 
-document.querySelectorAll(".comercial").forEach(x=>{
-totalComercial += Number(x.value)||0;
-});
+        filas.forEach((fila, index) => {
 
-document.querySelectorAll(".jumbo").forEach(x=>{
-totalJumbo += Number(x.value)||0;
-});
+            let td = document.createElement("td");
 
-document.querySelectorAll(".pardo").forEach(x=>{
-totalPardo += Number(x.value)||0;
-});
+            let input = document.createElement("input");
+            input.type = "number";
+            input.step = "0.01";
+            input.className = "peso " + clase;
 
-document.getElementById("pesoTotalComercial").value =
-totalComercial.toFixed(2);
+            td.appendChild(input);
 
-document.getElementById("pesoTotalJumbo").value =
-totalJumbo.toFixed(2);
+            // 🔥 IMPORTANTE: insertar SIEMPRE al final de la columna lógica
+            fila.appendChild(td);
+        });
 
-document.getElementById("pesoTotalPardo").value =
-totalPardo.toFixed(2);
+        columnasActuales[clase]++;
+    }
+    function eliminarColumna(idTabla, clase){
 
-let precioComercial =
-Number(document.getElementById("precioComercial").value)||0;
+        let tabla = document.getElementById(idTabla);
+        let filas = tabla.querySelectorAll("tbody tr");
 
-let precioJumbo =
-Number(document.getElementById("precioJumbo").value)||0;
+        filas.forEach(fila => {
+            if (fila.children.length > 1) {
+                fila.removeChild(fila.lastElementChild);
+            }
+        });
 
-let precioPardo =
-Number(document.getElementById("precioPardo").value)||0;
+        columnasActuales[clase] = Math.max(1, columnasActuales[clase] - 1);
+    }
 
-let importeComercial =
-totalComercial * precioComercial;
+    generarTabla("bodyComercial","comercial");
+    generarTabla("bodyJumbo","jumbo");
+    generarTabla("bodyPardo","pardo");
+    function calcular(){
 
-let importeJumbo =
-totalJumbo * precioJumbo;
+    let totalComercial=0;
+    let totalJumbo=0;
+    let totalPardo=0;
 
-let importePardo =
-totalPardo * precioPardo;
+    document.querySelectorAll(".comercial").forEach(x=>{
+    totalComercial += Number(x.value)||0;
+    });
 
-document.getElementById("importeComercial").value =
-importeComercial.toFixed(2);
+    document.querySelectorAll(".jumbo").forEach(x=>{
+    totalJumbo += Number(x.value)||0;
+    });
 
-document.getElementById("importeJumbo").value =
-importeJumbo.toFixed(2);
+    document.querySelectorAll(".pardo").forEach(x=>{
+    totalPardo += Number(x.value)||0;
+    });
 
-document.getElementById("importePardo").value =
-importePardo.toFixed(2);
+    document.getElementById("pesoTotalComercial").value =
+    totalComercial.toFixed(2);
 
-document.getElementById("importeGeneral").value =
-(importeComercial + importeJumbo + importePardo).toFixed(2);
+    document.getElementById("pesoTotalJumbo").value =
+    totalJumbo.toFixed(2);
 
-}
+    document.getElementById("pesoTotalPardo").value =
+    totalPardo.toFixed(2);
 
-document.addEventListener("input", calcular);
-function mostrarTablas(){
+    let precioComercial =
+    Number(document.getElementById("precioComercial").value)||0;
 
-    document.getElementById("contenedorTablas").style.display = "flex";
+    let precioJumbo =
+    Number(document.getElementById("precioJumbo").value)||0;
 
-    document.getElementById("seccionComercial").style.display =
-    document.getElementById("chkComercial").checked
-    ? "block"
-    : "none";
+    let precioPardo =
+    Number(document.getElementById("precioPardo").value)||0;
 
-    document.getElementById("seccionJumbo").style.display =
-    document.getElementById("chkJumbo").checked
-    ? "block"
-    : "none";
+    let importeComercial =
+    totalComercial * precioComercial;
 
-    document.getElementById("seccionPardo").style.display =
-    document.getElementById("chkPardo").checked
-    ? "block"
-    : "none";
-}
-function agregarPesoAutomatico(valor, tipo){
+    let importeJumbo =
+    totalJumbo * precioJumbo;
 
-    let celdas = document.querySelectorAll("." + tipo);
+    let importePardo =
+    totalPardo * precioPardo;
 
-    const filas = 20;
-    const columnas = 6;
+    document.getElementById("importeComercial").value =
+    importeComercial.toFixed(2);
 
-    for(let columna = 0; columna < columnas; columna++){
+    document.getElementById("importeJumbo").value =
+    importeJumbo.toFixed(2);
 
-        for(let fila = 0; fila < filas; fila++){
+    document.getElementById("importePardo").value =
+    importePardo.toFixed(2);
 
-            let indice = fila * columnas + columna;
+    document.getElementById("importeGeneral").value =
+    (importeComercial + importeJumbo + importePardo).toFixed(2);
 
-            if(celdas[indice].value === ""){
+    }
 
-                celdas[indice].value = valor;
-                calcular();
+    document.addEventListener("input", calcular);
+    function mostrarTablas(){
+
+        document.getElementById("contenedorTablas").style.display = "flex";
+
+        document.getElementById("seccionComercial").style.display =
+        document.getElementById("chkComercial").checked
+        ? "block"
+        : "none";
+
+        document.getElementById("seccionJumbo").style.display =
+        document.getElementById("chkJumbo").checked
+        ? "block"
+        : "none";
+
+        document.getElementById("seccionPardo").style.display =
+        document.getElementById("chkPardo").checked
+        ? "block"
+        : "none";
+    }
+    function agregarPesoAutomatico(valor, tipo){
+
+        let celdas = Array.from(document.querySelectorAll("." + tipo));
+
+        // Detectar columnas reales (según inputs existentes)
+        let columnas = [];
+
+        celdas.forEach((celda, index) => {
+
+            let col = index % celdas.length;
+
+        });
+
+        // Mejor enfoque: reconstrucción por columnas reales
+        let filas = 20;
+        let columnasMax = columnasActuales[tipo] || 1;
+
+        for (let col = 0; col < columnasMax; col++) {
+
+            for (let fila = 0; fila < filas; fila++) {
+
+                let index = fila * columnasMax + col;
+
+                if (celdas[index] && celdas[index].value === "") {
+                    celdas[index].value = valor;
+                    calcular();
+                    return;
+                }
+            }
+        }
+
+        alert("La tabla está llena");
+    }
+
+    function obtenerMatriz(tipo){
+
+        let tabla = document.querySelector("#tabla" + tipo.charAt(0).toUpperCase() + tipo.slice(1));
+        let filasDOM = tabla.querySelectorAll("tbody tr");
+
+        let filas = 20;
+        let columnas = columnasActuales[tipo] || 1;
+
+        let matriz = [];
+
+        for (let c = 0; c < columnas; c++) {
+            matriz[c] = [];
+        }
+
+        filasDOM.forEach((tr, filaIndex) => {
+
+            let inputs = tr.querySelectorAll("input." + tipo);
+
+            inputs.forEach((input, colIndex) => {
+
+                if (matriz[colIndex]) {
+                    matriz[colIndex][filaIndex] = input;
+                }
+            });
+
+        });
+
+        return matriz;
+    }
+
+    document.addEventListener("keydown", function(e){
+
+        if (e.key !== "Enter") return;
+
+        let active = document.activeElement;
+
+        if (!active.classList.contains("peso")) return;
+
+        e.preventDefault();
+
+        let tipo = active.classList[1];
+
+        let matriz = obtenerMatriz(tipo);
+
+        let filas = matriz[0].length;
+        let columnas = matriz.length;
+
+        let colActual = -1;
+        let filaActual = -1;
+
+        // encontrar posición real
+        for (let c = 0; c < columnas; c++) {
+            for (let f = 0; f < filas; f++) {
+                if (matriz[c][f] === active) {
+                    colActual = c;
+                    filaActual = f;
+                    break;
+                }
+            }
+            if (colActual !== -1) break;
+        }
+
+        // ↓ bajar en columna
+        for (let f = filaActual + 1; f < filas; f++) {
+            if (matriz[colActual][f] && matriz[colActual][f].value === "") {
+                matriz[colActual][f].focus();
                 return;
             }
         }
+
+        // → siguiente columna
+        for (let c = colActual + 1; c < columnas; c++) {
+            for (let f = 0; f < filas; f++) {
+                if (matriz[c][f] && matriz[c][f].value === "") {
+                    matriz[c][f].focus();
+                    return;
+                }
+            }
+        }
+
+    });
+
+    document.getElementById("btnGuardar")
+    .addEventListener("click", guardarLiquidacion);
+
+    function guardarLiquidacion(){
+
+        let datos = {
+
+            fecha: document.getElementById("fecha").value,
+
+            proveedor: document.getElementById("proveedor").value,
+
+            importe_total:
+            Number(document.getElementById("importeGeneral").value),
+
+            detalles: []
+        };
+
+
+        agregarTipo(
+            "Comercial",
+            "comercial",
+            "precioComercial",
+            "pesoTotalComercial",
+            "importeComercial",
+            datos
+        );
+
+        agregarTipo(
+            "Jumbo",
+            "jumbo",
+            "precioJumbo",
+            "pesoTotalJumbo",
+            "importeJumbo",
+            datos
+        );
+
+        agregarTipo(
+            "Pardo",
+            "pardo",
+            "precioPardo",
+            "pesoTotalPardo",
+            "importePardo",
+            datos
+        );
+
+
+        fetch("/guardar_liquidacion", {
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body: JSON.stringify({
+                ...datos,
+                columnas: {
+                    comercial: columnasActuales.comercial,
+                    jumbo: columnasActuales.jumbo,
+                    pardo: columnasActuales.pardo
+                }
+            })
+
+        })
+        .then(res=>res.json())
+        .then(data=>{
+
+            alert(data.mensaje);
+
+        });
+
     }
 
-    alert("La tabla está llena");
-}
-
-document.getElementById("btnGuardar")
-.addEventListener("click", guardarLiquidacion);
-
-function guardarLiquidacion(){
-
-    let datos = {
-
-        fecha: document.getElementById("fecha").value,
-
-        proveedor: document.getElementById("proveedor").value,
-
-        importe_total:
-        Number(document.getElementById("importeGeneral").value),
-
-        detalles: []
-    };
-
-
-    agregarTipo(
-        "Comercial",
-        "comercial",
-        "precioComercial",
-        "pesoTotalComercial",
-        "importeComercial",
+    function agregarTipo(
+        nombre,
+        clase,
+        idPrecio,
+        idPesoTotal,
+        idImporte,
         datos
-    );
+    ){
 
-    agregarTipo(
-        "Jumbo",
-        "jumbo",
-        "precioJumbo",
-        "pesoTotalJumbo",
-        "importeJumbo",
-        datos
-    );
+        let pesos = [];
 
-    agregarTipo(
-        "Pardo",
-        "pardo",
-        "precioPardo",
-        "pesoTotalPardo",
-        "importePardo",
-        datos
-    );
+        document.querySelectorAll("." + clase)
+    .forEach((x, index) => {
 
+        if (x.value !== "") {
 
-    fetch("/guardar_liquidacion", {
+            let filas = 20;
+            let posicion = index;
 
-        method:"POST",
+            pesos.push({
+                valor: Number(x.value),
+                posicion: posicion
+            });
 
-        headers:{
-            "Content-Type":"application/json"
-        },
-
-        body:JSON.stringify(datos)
-
-    })
-    .then(res=>res.json())
-    .then(data=>{
-
-        alert(data.mensaje);
-
-    });
-
-}
-
-function agregarTipo(
-    nombre,
-    clase,
-    idPrecio,
-    idPesoTotal,
-    idImporte,
-    datos
-){
-
-    let pesos = [];
-
-    document.querySelectorAll("." + clase)
-    .forEach(x=>{
-
-        if(x.value!="")
-            pesos.push(Number(x.value));
-
+        }
     });
 
 
-    if(pesos.length==0)
-        return;
+        if(pesos.length==0)
+            return;
 
 
-    datos.detalles.push({
+        datos.detalles.push({
 
-        tipo_huevo:nombre,
+            tipo_huevo:nombre,
 
-        precio_kg:
-        Number(document.getElementById(idPrecio).value),
+            precio_kg:
+            Number(document.getElementById(idPrecio).value),
 
-        peso_total:
-        Number(document.getElementById(idPesoTotal).value),
+            peso_total:
+            Number(document.getElementById(idPesoTotal).value),
 
-        importe:
-        Number(document.getElementById(idImporte).value),
+            importe:
+            Number(document.getElementById(idImporte).value),
 
-        cantidad_paquetes:
-        pesos.length,
+            cantidad_paquetes:
+            pesos.length,
 
-        pesos:pesos
+            pesos:pesos, 
 
-    });
+            columnas: columnasActuales[clase]
 
-}   
+        });
+
+    }   
+

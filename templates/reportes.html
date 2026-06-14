@@ -292,128 +292,73 @@
 
     <form method="POST">
 
-        <input type="hidden"
-            name="accion"
-            value="resumen">
+        <input type="hidden" name="accion" value="resumen">
 
-        <input type="hidden"
-            name="fecha_compra"
-            value="{{ fecha_compra }}">
-
-        <input type="hidden"
-            name="fecha_venta"
-            value="{{ fecha_venta }}">
+        <input type="hidden" name="fecha_compra" value="{{ fecha_compra }}">
+        <input type="hidden" name="fecha_venta" value="{{ fecha_venta }}">
 
         Costo por paquete:
 
-        <input
-            type="number"
-            step="0.01"
-            min="0"
-            name="costo_flete"
-            value="{{ costo_flete }}"
-            required>
+        <input type="number" step="0.01" min="0" name="costo_flete"
+               value="{{ costo_flete }}" required>
 
-        <button type="submit">
-            Calcular Resumen Económico
-        </button>
-
+        <button type="submit">Calcular Resumen</button>
     </form>
 
     <form method="POST">
-
-        <input type="hidden"
-            name="accion"
-            value="guardar_reporte">
-
-        <button type="submit">
-            Guardar Reporte
-        </button>
-
+        <input type="hidden" name="accion" value="guardar_reporte">
+        <button type="submit">Guardar Reporte</button>
     </form>
 
     <br>
 
     {% if accion_actual == "resumen" %}
 
-    <table border="1">
+    <div class="tabla-scroll">
 
-    <tr>
-        <th>Concepto</th>
-        <th>Valor</th>
-    </tr>
+        <table class="tabla-resumen">
 
-    <tr>
-        <td>Ganancia Bruta</td>
-        <td>S/ {{ "%.2f"|format(ganancia_bruta) }}</td>
-    </tr>
+            <tr>
+                <th>Concepto</th>
+                <th>Ganancia Bruta</th>
+                <th>Costo paquete</th>
+                <th>Flete</th>
+                <th>Ganancia</th>
+                <th>% GB</th>
+                <th>% Inv</th>
+                <th>% Flete GB</th>
+                <th>% Flete Compras</th>
+                <th>% Gan/GB</th>
+                <th>Diferencia Kg</th>
+                <th>Precio Prom.</th>
+                <th>Pérdida</th>
+            </tr>
 
-    <tr>
-        <td>Costo por paquete</td>
-        <td>S/ {{ "%.2f"|format(costo_flete) }}</td>
-    </tr>
+            <tr>
+                <td>Valor</td>
+                <td>S/ {{ "%.2f"|format(ganancia_bruta) }}</td>
+                <td>S/ {{ "%.2f"|format(costo_flete) }}</td>
+                <td>S/ {{ "%.2f"|format(flete) }}</td>
+                <td>S/ {{ "%.2f"|format(ganancia) }}</td>
+                <td>{{ "%.2f"|format(porcentaje_ganancia_bruta) }}%</td>
+                <td>{{ "%.2f"|format(porcentaje_ganancia_inversion) }}%</td>
+                <td>{{ "%.2f"|format(porcentaje_flete_ganancia_bruta) }}%</td>
+                <td>{{ "%.2f"|format(porcentaje_flete_compras) }}%</td>
+                <td>{{ "%.2f"|format(porcentaje_ganancia_ganancia_bruta) }}%</td>
+                <td>{{ "%.2f"|format(diferencia_kg) }} Kg</td>
+                <td>S/ {{ "%.2f"|format(precio_promedio) }}</td>
+                <td>S/ {{ "%.2f"|format(perdida) }}</td>
+            </tr>
 
-    <tr>
-        <td>Flete</td>
-        <td>S/ {{ "%.2f"|format(flete) }}</td>
-    </tr>
+        </table>
 
-    <tr>
-        <td>Ganancia</td>
-        <td>S/ {{ "%.2f"|format(ganancia) }}</td>
-    </tr>
-
-    <tr>
-        <td>% Ganancia Bruta</td>
-        <td>{{ "%.2f"|format(porcentaje_ganancia_bruta) }} %</td>
-    </tr>
-
-    <tr>
-        <td>% Ganancia respecto a inversión</td>
-        <td>{{ "%.2f"|format(porcentaje_ganancia_inversion) }} %</td>
-    </tr>
-
-    <tr>
-        <td>% Flete / Ganancia Bruta</td>
-        <td>{{ "%.2f"|format(porcentaje_flete_ganancia_bruta) }} %</td>
-    </tr>
-
-    <tr>
-        <td>% Flete / Compras</td>
-        <td>{{ "%.2f"|format(porcentaje_flete_compras) }} %</td>
-    </tr>
-
-    <tr>
-        <td>% Ganancia / Ganancia Bruta</td>
-        <td>{{ "%.2f"|format(porcentaje_ganancia_ganancia_bruta) }} %</td>
-    </tr>
-
-    <tr>
-        <td>Diferencia Kg</td>
-        <td>{{ "%.2f"|format(diferencia_kg) }} Kg</td>
-    </tr>
-
-    <tr>
-        <td>Precio Promedio</td>
-        <td>S/ {{ "%.2f"|format(precio_promedio) }}</td>
-    </tr>
-
-    <tr>
-        <td>Pérdida</td>
-        <td>S/ {{ "%.2f"|format(perdida) }}</td>
-    </tr>
-
-    </table>
+    </div>
 
     {% endif %}
 
     <div style="text-align:center;">
-
-        <button onclick="window.location.href='/'">
-
-            🏠 Volver al Inicio
-
-        </button>
+        <button onclick="window.location.href='/'">🏠 Volver al Inicio</button>
+    </div>
 
 </div>
 

@@ -10,25 +10,28 @@ body{
     font-family:'Segoe UI', sans-serif;
     background:#f4f6f9;
     margin:0;
-    padding:20px;
+    padding:5px;      /* antes 20px */
+    font-size:6px;    /* reduce todo el contenido */
 }
 
 .container{
-    max-width:1200px;
+    max-width:500px;  /* antes 1200px */
     margin:auto;
 }
 
 /* TITULOS */
 h1{
     text-align:center;
-    margin:25px 0 10px;
+    margin:15px 0 8px;
     color:#2c3e50;
+    font-size:11px;    /* antes tamaño por defecto */
 }
 
 h2{
     text-align:center;
-    margin:25px 0 10px;
+    margin:15px 0 8px;
     color:#34495e;
+    font-size:11px;
 }
 
 /* TABLAS */
@@ -36,25 +39,25 @@ table{
     width:100%;
     border-collapse:collapse;
     background:white;
-    border-radius:10px;
+    border-radius:8px;
     overflow:hidden;
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
-    margin-bottom:25px;
+    box-shadow:0 1px 5px rgba(0,0,0,0.08);
+    margin-bottom:15px;
 }
 
 th{
     background:#3498db;
     color:white;
-    padding:10px;
-    font-size:14px;
+    padding:6px;
+    font-size:12px;
     text-align:center;
 }
 
 td{
-    padding:10px;
+    padding:6px;
     border-bottom:1px solid #eee;
     text-align:center;
-    font-size:14px;
+    font-size:12px;
 }
 
 tr:nth-child(even){
@@ -63,9 +66,12 @@ tr:nth-child(even){
 
 /* DETALLE */
 .detalle{
-    width:75%;
+    width:100%;
+    display:flex;
+    justify-content:center;
     margin:auto;
 }
+
 
 /* VALORES */
 .valor{
@@ -78,15 +84,14 @@ tr:nth-child(even){
     text-align:center;
     margin-top:20px;
 }
-
 a{
     display:inline-block;
     text-decoration:none;
-    padding:10px 18px;
+    padding:8px 14px;
     background:#27ae60;
     color:white;
-    border-radius:8px;
-    transition:0.2s;
+    border-radius:6px;
+    font-size:12px;
 }
 
 a:hover{
@@ -95,6 +100,28 @@ a:hover{
 
 .section-title{
     margin-top:40px;
+}
+
+.tabla-resumen{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+
+.tabla-resumen th,
+.tabla-resumen td{
+    padding:5px;       /* antes 3px */
+    font-size:10px;    /* antes 9px */
+    white-space:nowrap;
+}
+
+.tabla-resumen .valor{
+    font-weight:bold;
+    color:#2c3e50;
+}
+
+.tabla-resumen tr:nth-child(even){
+    background:#f8f9fa;
 }
 
 </style>
@@ -223,85 +250,47 @@ a:hover{
 <h1 class="section-title">DETALLE DEL REPORTE</h1>
 
 <div class="detalle">
+<div style="overflow-x:auto;"></div>
+<table class="tabla-resumen">
 
-<table>
+    <tr>
+        <th>Concepto</th>
+        <th>Ganancia Bruta</th>
+        <th>Costo por Paquete</th>
+        <th>Flete</th>
+        <th>Ganancia</th>
+        <th>% Ganancia Bruta</th>
+        <th>% Ganancia vs Inversión</th>
+        <th>% Flete / Ganancia Bruta</th>
+        <th>% Flete / Compras</th>
+        <th>% Ganancia / Ganancia Bruta</th>
+        <th>Diferencia Kg</th>
+        <th>Precio Promedio</th>
+        <th>Pérdida</th>
+    </tr>
 
-<tr>
-    <th>Concepto</th>
-    <th>Valor</th>
-</tr>
+    <tr>
+    <td class="valor">Valor</td>
 
-<tr>
-    <td>Fecha del Reporte</td>
-    <td class="valor">{{ reporte[1] }}</td>
-</tr>
+    <td class="valor">S/ {{ "%.2f"|format(reporte[8]) }}</td>  <!-- Ganancia Bruta -->
+    <td class="valor">S/ {{ "%.2f"|format(reporte[6]) }}</td>  <!-- Costo flete -->
+    <td class="valor">S/ {{ "%.2f"|format(reporte[7]) }}</td>  <!-- Flete -->
+    <td class="valor">S/ {{ "%.2f"|format(reporte[9]) }}</td>  <!-- Ganancia -->
 
-<tr>
-    <td>Fecha de Compras</td>
-    <td class="valor">{{ reporte[2] }}</td>
-</tr>
-
-<tr>
-    <td>Fecha de Ventas</td>
-    <td class="valor">{{ reporte[3] }}</td>
-</tr>
-
-<tr>
-    <td>Inversión Total</td>
-    <td class="valor">S/ {{ "%.2f"|format(reporte[4]) }}</td>
-</tr>
-
-<tr>
-    <td>Venta Total</td>
-    <td class="valor">S/ {{ "%.2f"|format(reporte[5]) }}</td>
-</tr>
-
-<tr>
-    <td>Costo por Paquete</td>
-    <td class="valor">S/ {{ "%.2f"|format(reporte[6]) }}</td>
-</tr>
-
-<tr>
-    <td>Flete</td>
-    <td class="valor">S/ {{ "%.2f"|format(reporte[7]) }}</td>
-</tr>
-
-<tr>
-    <td>Ganancia Bruta</td>
-    <td class="valor">S/ {{ "%.2f"|format(reporte[8]) }}</td>
-</tr>
-
-<tr>
-    <td>Ganancia Neta</td>
-    <td class="valor">S/ {{ "%.2f"|format(reporte[9]) }}</td>
-</tr>
-
-<tr>
-    <td>% Ganancia Bruta</td>
     <td class="valor">{{ "%.2f"|format(reporte[10]) }} %</td>
-</tr>
-
-<tr>
-    <td>% Ganancia vs Inversión</td>
     <td class="valor">{{ "%.2f"|format(reporte[11]) }} %</td>
-</tr>
 
-<tr>
-    <td>Diferencia de Kg</td>
+    <td class="valor">{{ "%.2f"|format(reporte[7] / reporte[8] * 100 if reporte[8] else 0) }} %</td>
+    <td class="valor">{{ "%.2f"|format(reporte[7] / reporte[4] * 100 if reporte[4] else 0) }} %</td>
+    <td class="valor">{{ "%.2f"|format(reporte[9] / reporte[8] * 100 if reporte[8] else 0) }} %</td>
+
     <td class="valor">{{ "%.2f"|format(reporte[12]) }} Kg</td>
-</tr>
-
-<tr>
-    <td>Precio Promedio</td>
     <td class="valor">S/ {{ "%.2f"|format(reporte[13]) }}</td>
-</tr>
-
-<tr>
-    <td>Pérdida</td>
     <td class="valor">S/ {{ "%.2f"|format(reporte[14]) }}</td>
 </tr>
 
 </table>
+</div>
 
 </div>
 

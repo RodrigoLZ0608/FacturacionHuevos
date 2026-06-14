@@ -93,11 +93,16 @@ input:focus{
     background:#2c3e50;
 }
 
+.table-responsive{
+    overflow-x:auto;
+    width:100%;
+}
+
 table{
     width:100%;
     border-collapse:collapse;
     border-radius:10px;
-    overflow:hidden;
+    min-width:700px;
 }
 
 thead{
@@ -185,7 +190,7 @@ tbody tr:hover{
     <div class="card">
 
         <h2>📋 Competidores Registrados</h2>
-
+        <div class="table-responsive">
         <table>
 
             <thead>
@@ -231,7 +236,7 @@ tbody tr:hover{
             </tbody>
 
         </table>
-
+        </div>
     </div>
 
     <div class="centro">

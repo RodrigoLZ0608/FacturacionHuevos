@@ -100,11 +100,16 @@ input:focus{
 }
 
 /* TABLA IGUAL */
+.table-responsive{
+    overflow-x:auto;
+    width:100%;
+}
+
 table{
     width:100%;
     border-collapse:collapse;
     border-radius:10px;
-    overflow:hidden;
+    min-width:700px;
 }
 
 thead{
@@ -197,7 +202,7 @@ tbody tr:hover{
     <div class="card">
 
         <h2>📋 Proveedores Registrados</h2>
-
+        <div class="table-responsive">
         <table>
 
             <thead>
@@ -239,7 +244,7 @@ tbody tr:hover{
             </tbody>
 
         </table>
-
+        </div>
     </div>
 
     <!-- BOTÓN -->

@@ -1,39 +1,66 @@
 console.log("VENTAS JS CARGADO");
 
-document.addEventListener("DOMContentLoaded", () => {
-
-    const hoy = new Date();
-
-    const fechaLocal = hoy.getFullYear() + "-" +
-        String(hoy.getMonth() + 1).padStart(2, "0") + "-" +
-        String(hoy.getDate()).padStart(2, "0");
-
-    document.getElementById("fechaVenta").value = fechaLocal;
-});
+let columnasActuales = {
+    comercial:1,
+    jumbo:1,
+    pardo:1
+};
 
 function generarTabla(id, clase){
 
     let body = document.getElementById(id);
 
+    body.innerHTML = "";
+
     for(let i=0;i<20;i++){
 
-        let fila = "<tr>";
-
-        for(let j=0;j<6;j++){
-
-            fila += `
+        body.innerHTML += `
+        <tr>
             <td>
-            <input type="number"
-            class="peso ${clase}"
-            step="0.01">
+                <input
+                    type="number"
+                    class="peso ${clase}"
+                    step="0.01">
             </td>
-            `;
-        }
-
-        fila += "</tr>";
-
-        body.innerHTML += fila;
+        </tr>
+        `;
     }
+}
+
+function agregarColumna(idTabla, clase){
+
+    let tabla = document.getElementById(idTabla);
+    let filas = tabla.querySelectorAll("tbody tr");
+
+    filas.forEach((fila, index) => {
+
+        let td = document.createElement("td");
+
+        let input = document.createElement("input");
+        input.type = "number";
+        input.step = "0.01";
+        input.className = "peso " + clase;
+
+        td.appendChild(input);
+
+        // 🔥 IMPORTANTE: insertar SIEMPRE al final de la columna lógica
+        fila.appendChild(td);
+    });
+
+    columnasActuales[clase]++;
+}
+function eliminarColumna(idTabla, clase){
+
+    let tabla = document.getElementById(idTabla);
+    let filas = tabla.querySelectorAll("tbody tr");
+
+    filas.forEach(fila => {
+        if (fila.children.length > 1) {
+            fila.removeChild(fila.lastElementChild);
+        }
+    });
+
+    columnasActuales[clase] = Math.max(1, columnasActuales[clase] - 1);
 }
 
 generarTabla("bodyComercial","comercial");
@@ -96,20 +123,29 @@ function mostrarTablas(){
 
 function agregarPesoAutomatico(valor, tipo){
 
-    let celdas = document.querySelectorAll("." + tipo);
+    let celdas = Array.from(document.querySelectorAll("." + tipo));
 
-    const filas = 20;
-    const columnas = 6;
+    // Detectar columnas reales (según inputs existentes)
+    let columnas = [];
 
-    for(let columna = 0; columna < columnas; columna++){
+    celdas.forEach((celda, index) => {
 
-        for(let fila = 0; fila < filas; fila++){
+        let col = index % celdas.length;
 
-            let indice = fila * columnas + columna;
+    });
 
-            if(celdas[indice].value === ""){
+    // Mejor enfoque: reconstrucción por columnas reales
+    let filas = 20;
+    let columnasMax = columnasActuales[tipo] || 1;
 
-                celdas[indice].value = valor;
+    for (let col = 0; col < columnasMax; col++) {
+
+        for (let fila = 0; fila < filas; fila++) {
+
+            let index = fila * columnasMax + col;
+
+            if (celdas[index] && celdas[index].value === "") {
+                celdas[index].value = valor;
                 calcular();
                 return;
             }
@@ -118,6 +154,89 @@ function agregarPesoAutomatico(valor, tipo){
 
     alert("La tabla está llena");
 }
+
+function obtenerMatriz(tipo){
+
+    let tabla = document.querySelector("#tabla" + tipo.charAt(0).toUpperCase() + tipo.slice(1));
+    let filasDOM = tabla.querySelectorAll("tbody tr");
+
+    let filas = 20;
+    let columnas = columnasActuales[tipo] || 1;
+
+    let matriz = [];
+
+    for (let c = 0; c < columnas; c++) {
+        matriz[c] = [];
+    }
+
+    filasDOM.forEach((tr, filaIndex) => {
+
+        let inputs = tr.querySelectorAll("input." + tipo);
+
+        inputs.forEach((input, colIndex) => {
+
+            if (matriz[colIndex]) {
+                matriz[colIndex][filaIndex] = input;
+            }
+        });
+
+    });
+
+    return matriz;
+}
+
+document.addEventListener("keydown", function(e){
+
+    if (e.key !== "Enter") return;
+
+    let active = document.activeElement;
+
+    if (!active.classList.contains("peso")) return;
+
+    e.preventDefault();
+
+    let tipo = active.classList[1];
+
+    let matriz = obtenerMatriz(tipo);
+
+    let filas = matriz[0].length;
+    let columnas = matriz.length;
+
+    let colActual = -1;
+    let filaActual = -1;
+
+    // encontrar posición real
+    for (let c = 0; c < columnas; c++) {
+        for (let f = 0; f < filas; f++) {
+            if (matriz[c][f] === active) {
+                colActual = c;
+                filaActual = f;
+                break;
+            }
+        }
+        if (colActual !== -1) break;
+    }
+
+    // ↓ bajar en columna
+    for (let f = filaActual + 1; f < filas; f++) {
+        if (matriz[colActual][f] && matriz[colActual][f].value === "") {
+            matriz[colActual][f].focus();
+            return;
+        }
+    }
+
+    // → siguiente columna
+    for (let c = colActual + 1; c < columnas; c++) {
+        for (let f = 0; f < filas; f++) {
+            if (matriz[c][f] && matriz[c][f].value === "") {
+                matriz[c][f].focus();
+                return;
+            }
+        }
+    }
+
+});
+
 
 document.getElementById("btnGuardarVenta")
 .addEventListener("click", guardarVenta);
@@ -159,10 +278,20 @@ function agregarTipoVenta(nombre, clase, idPrecio, idPesoTotal, idImporte, datos
     let pesos = [];
 
     document.querySelectorAll("." + clase)
-    .forEach(x=>{
-        if(x.value!="")
-            pesos.push(Number(x.value));
-    });
+.forEach((x, index) => {
+
+    if (x.value !== "") {
+
+        let filas = 20;
+        let posicion = index;
+
+        pesos.push({
+            valor: Number(x.value),
+            posicion: posicion
+        });
+
+    }
+});
 
     if(pesos.length==0) return;
 
@@ -178,6 +307,8 @@ function agregarTipoVenta(nombre, clase, idPrecio, idPesoTotal, idImporte, datos
 
         cantidad_paquetes: pesos.length,
 
-        pesos: pesos
+        pesos: pesos,
+        
+        columnas: columnasActuales[clase]
     });
 }

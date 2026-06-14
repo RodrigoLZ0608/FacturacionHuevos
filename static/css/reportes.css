@@ -7,67 +7,71 @@
 
 body{
     background:#f4f6f9;
-    padding:25px;
-    font-size:14px;
+    padding:10px;
+    font-size:12px;
 }
 
 /* CONTENEDOR GENERAL */
 .contenedor{
     display:flex;
-    gap:20px;
+    gap:10px;
     align-items:flex-start;
 }
 
 /* COLUMNAS */
 .columna{
-    flex:1;
+    width:610px;
     background:white;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    padding:12px;
+    border-radius:10px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.08);
 }
 
 /* TITULOS */
 h1{
-    font-size:20px;
-    margin-bottom:15px;
-    color:#2c3e50;
+    font-size:16px;
+    margin-bottom:10px;
+    color:#000000;
     text-align:center;
 }
 
 h2{
-    font-size:16px;
-    margin:15px 0;
-    color:#34495e;
+    font-size:13px;
+    margin:10px 0;
+    color:#000000;
     text-align:center;
 }
 
 /* INPUTS */
-input, select{
-    padding:8px;
+input,
+select{
+    padding:5px;
     border:1px solid #ccc;
-    border-radius:8px;
+    border-radius:5px;
     outline:none;
     transition:0.2s;
-    width:100%;
-    margin-top:5px;
+    width:20%;
+    margin-top:3px;
+    font-size:12px;
 }
 
-input:focus, select:focus{
+input:focus,
+select:focus{
     border-color:#3498db;
-    box-shadow:0 0 5px rgba(52,152,219,0.3);
+    box-shadow:0 0 4px rgba(52,152,219,0.3);
 }
 
 /* BOTONES */
 button{
-    margin-top:10px;
-    padding:10px 14px;
+    margin-top:6px;
+    padding:6px 10px;
     border:none;
-    border-radius:8px;
+    border-radius:6px;
     cursor:pointer;
     background:#3498db;
     color:white;
     font-weight:bold;
+    font-size:12px;
     transition:0.2s;
 }
 
@@ -75,33 +79,35 @@ button:hover{
     background:#2980b9;
 }
 
-/* ================= TABLAS (ENCABEZADO Y FILAS) ================= */
+/* ================= TABLAS ================= */
 
 .encabezado{
     display:grid;
-    grid-template-columns: 160px 160px 160px 160px 160px;
+    grid-template-columns:130px 110px 110px 110px 130px;
     background:#3498db;
     color:white;
     font-weight:bold;
     text-align:center;
-    border-radius:8px;
+    border-radius:6px;
     overflow:hidden;
-    margin-top:10px;
+    margin-top:8px;
+    font-size:11px;
 }
 
 .encabezado div{
-    padding:10px;
+    padding:6px;
     border-right:1px solid rgba(255,255,255,0.2);
 }
 
 .fila{
     display:grid;
-    grid-template-columns: 160px 160px 160px 160px 160px;
+    grid-template-columns:130px 110px 110px 110px 130px;
     border:1px solid #ddd;
-    margin-top:5px;
-    border-radius:8px;
+    margin-top:4px;
+    border-radius:6px;
     overflow:hidden;
     background:white;
+    font-size:11px;
 }
 
 /* PRIMERA COLUMNA */
@@ -114,6 +120,8 @@ button:hover{
     font-weight:bold;
     background:#f8f9fa;
     border-right:1px solid #ddd;
+    padding:4px;
+    text-align:center;
 }
 
 /* COLUMNAS INTERMEDIAS */
@@ -123,10 +131,10 @@ button:hover{
 }
 
 .tipo div{
-    padding:4px;
+    padding:2px;
 }
 
-/* TOTAL */
+/* TOTALES */
 .totalProveedor,
 .totalCliente{
     text-align:center;
@@ -136,68 +144,52 @@ button:hover{
 
 .totalProveedor div,
 .totalCliente div{
-    padding:6px;
+    padding:3px;
     border-bottom:1px solid #ddd;
 }
 
-/* HR LIMPIO */
+/* HR */
 hr{
-    margin:25px 0;
+    margin:15px 0;
     border:0;
     height:1px;
     background:#ddd;
 }
 
-/* RESPONSIVE */
-@media(max-width:1000px){
-    .contenedor{
-        flex-direction:column;
-    }
-
-    .encabezado,
-    .fila{
-        grid-template-columns: 1fr;
-    }
-
-    .encabezado div,
-    .fila div{
-        border-right:none;
-        border-bottom:1px solid #eee;
-    }
-}
-
-/* ================= RESUMEN ECONÓMICO ================= */
+/* ================= RESUMEN ================= */
 
 .resumen{
-    margin-top:25px;
+    margin-top:15px;
     background:white;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    padding:12px;
+    border-radius:10px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.08);
+
+    width:100%;
+    max-width:1100px;
+    margin:15px auto;
 }
 
 .resumen h1{
     text-align:center;
-    margin-bottom:15px;
-    font-size:20px;
+    margin-bottom:10px;
+    font-size:16px;
     color:#2c3e50;
 }
 
-/* FORM RESUMEN */
 .resumen form{
     display:flex;
     flex-wrap:wrap;
-    gap:10px;
+    gap:8px;
     align-items:center;
     justify-content:center;
+    margin-bottom:8px;
 }
 
-/* inputs del resumen */
 .resumen input{
-    width:180px;
+    width:130px;
 }
 
-/* botones del resumen */
 .resumen button{
     background:#27ae60;
 }
@@ -206,27 +198,59 @@ hr{
     background:#219150;
 }
 
-/* tabla del resumen */
 .resumen table{
     width:100%;
-    margin-top:15px;
     border-collapse:collapse;
-    border-radius:10px;
-    overflow:hidden;
+    font-size:11px;
+    white-space:nowrap;
 }
 
 .resumen th{
+    border:1px solid #ddd;
+    padding:6px;
+    text-align:center;
     background:#3498db;
     color:white;
-    padding:10px;
 }
 
 .resumen td{
-    padding:10px;
-    border:1px solid #eee;
+    border:1px solid #ddd;
+    padding:6px;
     text-align:center;
 }
 
 .resumen tr:nth-child(even){
     background:#f8f9fa;
+}
+
+/* BOTÓN INICIO */
+div[style="text-align:center;"] button{
+    margin-top:10px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1200px){
+
+    .contenedor{
+        flex-direction:column;
+    }
+
+    .encabezado,
+    .fila{
+        grid-template-columns:1fr;
+    }
+
+    .encabezado div,
+    .fila div{
+        border-right:none;
+        border-bottom:1px solid #eee;
+    }
+}
+.contenedor{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    justify-content:center;
+    flex-wrap:wrap;
 }

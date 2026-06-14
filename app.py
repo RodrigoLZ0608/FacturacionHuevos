@@ -5,7 +5,15 @@ from flask import redirect
 from flask import session
 from datetime import datetime
 import json
-import sqlite3
+import psycopg2
+import os
+
+
+def conectar_bd():
+
+    return psycopg2.connect(
+        os.environ.get("DATABASE_URL")
+    )
 
 app = Flask(__name__)
 app.secret_key = "facturacion_huevos"
@@ -27,7 +35,7 @@ def inicio():
 @app.route("/clientes", methods=["GET", "POST"])
 def clientes():
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     if request.method == "POST":
@@ -39,7 +47,7 @@ def clientes():
         cursor.execute("""
         INSERT INTO Clientes
         (nombre, direccion, distrito)
-        VALUES (?, ?, ?)
+        VALUES (%s, %s, %s)
         """, (nombre, direccion, distrito))
 
         conexion.commit()
@@ -74,7 +82,7 @@ def clientes():
 @app.route("/proveedores", methods=["GET", "POST"])
 def proveedores():
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     if request.method == "POST":
@@ -86,7 +94,7 @@ def proveedores():
         cursor.execute("""
         INSERT INTO Proveedores
         (nombre, direccion, distrito)
-        VALUES (?, ?, ?)
+        VALUES (%s, %s, %s)
         """, (nombre, direccion, distrito))
 
         conexion.commit()
@@ -114,12 +122,12 @@ def proveedores():
 @app.route("/eliminar_proveedor/<int:id>")
 def eliminar_proveedor(id):
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     cursor.execute("""
     DELETE FROM Proveedores
-    WHERE id = ?
+    WHERE id = %s
     """, (id,))
 
     conexion.commit()
@@ -131,7 +139,7 @@ def eliminar_proveedor(id):
 @app.route("/editar_proveedor/<int:id>", methods=["GET", "POST"])
 def editar_proveedor(id):
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     if request.method == "POST":
@@ -142,10 +150,10 @@ def editar_proveedor(id):
 
         cursor.execute("""
         UPDATE Proveedores
-        SET nombre = ?,
-            direccion = ?,
-            distrito = ?
-        WHERE id = ?
+        SET nombre = %s,
+            direccion = %s,
+            distrito = %s
+        WHERE id = %s
         """,
         (
             nombre,
@@ -163,7 +171,7 @@ def editar_proveedor(id):
     cursor.execute("""
     SELECT *
     FROM Proveedores
-    WHERE id = ?
+    WHERE id = %s
     """, (id,))
 
     proveedor = cursor.fetchone()
@@ -185,7 +193,7 @@ def editar_proveedor(id):
 @app.route("/compras")
 def compras():
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     cursor.execute("""
@@ -211,7 +219,7 @@ def guardar_liquidacion():
 
     datos = request.get_json()
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     # Buscar proveedor
@@ -219,7 +227,7 @@ def guardar_liquidacion():
     cursor.execute("""
     SELECT id
     FROM Proveedores
-    WHERE nombre = ?
+    WHERE nombre = %s
     """, (datos["proveedor"],))
 
     fila = cursor.fetchone()
@@ -243,7 +251,8 @@ def guardar_liquidacion():
         proveedor_id,
         importe_total
     )
-    VALUES (?, ?, ?)
+    VALUES (%s, %s, %s)
+    RETURNING id
     """,
     (
         datos["fecha"],
@@ -251,7 +260,7 @@ def guardar_liquidacion():
         datos["importe_total"]
     ))
 
-    liquidacion_id = cursor.lastrowid
+    liquidacion_id = cursor.fetchone()[0]
 
     # Detalles
 
@@ -260,22 +269,28 @@ def guardar_liquidacion():
         cursor.execute("""
         SELECT id
         FROM TipoHuevo
-        WHERE nombre = ?
+        WHERE nombre = %s
         """, (detalle["tipo_huevo"],))
 
-        tipo_huevo_id = cursor.fetchone()[0]
+        fila = cursor.fetchone()
+
+        if fila is None:
+            continue
+
+        tipo_huevo_id = fila[0]
 
         cursor.execute("""
-        INSERT INTO DetalleCompra
-        (
+        INSERT INTO DetalleCompra (
             liquidacion_compra_id,
             tipo_huevo_id,
             precio_kg,
             peso_total,
             cantidad_paquetes,
-            importe
+            importe,
+            columnas
         )
-        VALUES (?, ?, ?, ?, ?, ?)
+        VALUES (%s,%s,%s,%s,%s,%s,%s)
+        RETURNING id
         """,
         (
             liquidacion_id,
@@ -283,25 +298,24 @@ def guardar_liquidacion():
             detalle["precio_kg"],
             detalle["peso_total"],
             detalle["cantidad_paquetes"],
-            detalle["importe"]
+            detalle["importe"],
+            detalle["columnas"]
         ))
 
-        detalle_id = cursor.lastrowid
+        detalle_id = cursor.fetchone()[0]
 
-        for peso in detalle["pesos"]:
+        for p in detalle["pesos"]:
 
             cursor.execute("""
-            INSERT INTO PesoPaqueteCompra
-            (
-                detalle_compra_id,
-                peso
-            )
-            VALUES (?, ?)
-            """,
-            (
-                detalle_id,
-                peso
-            ))
+        INSERT INTO PesoPaqueteCompra
+        (detalle_compra_id, peso, posicion)
+        VALUES (%s, %s, %s)
+        """,
+        (
+            detalle_id,
+            p["valor"],
+            p["posicion"]
+        ))
 
     conexion.commit()
     conexion.close()
@@ -313,7 +327,7 @@ def guardar_liquidacion():
 @app.route("/historial_liquidaciones")
 def historial_liquidaciones():
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     cursor.execute("""
@@ -343,7 +357,7 @@ def historial_liquidaciones():
 @app.route("/ver_liquidacion/<int:id>")
 def ver_liquidacion(id):
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     cursor.execute("""
@@ -354,7 +368,7 @@ def ver_liquidacion(id):
     FROM LiquidacionCompra
     INNER JOIN Proveedores
         ON LiquidacionCompra.proveedor_id = Proveedores.id
-    WHERE LiquidacionCompra.id = ?
+    WHERE LiquidacionCompra.id = %s
     """, (id,))
 
     cabecera = cursor.fetchone()
@@ -366,14 +380,15 @@ def ver_liquidacion(id):
         DetalleCompra.precio_kg,
         DetalleCompra.peso_total,
         DetalleCompra.cantidad_paquetes,
-        DetalleCompra.importe
+        DetalleCompra.importe,
+        DetalleCompra.columnas
 
     FROM DetalleCompra
 
     INNER JOIN TipoHuevo
         ON DetalleCompra.tipo_huevo_id = TipoHuevo.id
 
-    WHERE DetalleCompra.liquidacion_compra_id = ?
+    WHERE DetalleCompra.liquidacion_compra_id = %s
     """, (id,))
 
     detalles = cursor.fetchall()
@@ -385,41 +400,33 @@ def ver_liquidacion(id):
         detalle_id = d[0]
 
         cursor.execute("""
-        SELECT peso
+        SELECT peso, posicion
         FROM PesoPaqueteCompra
-        WHERE detalle_compra_id = ?
+        WHERE detalle_compra_id = %s
+        ORDER BY posicion
         """, (detalle_id,))
 
         pesos = cursor.fetchall()
 
-        lista_pesos = [p[0] for p in pesos]
+        columnas = d[6]   # PRIMERO sacar columnas del detalle
 
-        tabla = []
+        tabla = [["" for _ in range(columnas)] for _ in range(20)]
 
-        for fila in range(20):
+        for peso, posicion in pesos:
+            fila = posicion // columnas
+            columna = posicion % columnas
 
-            fila_actual = []
+            if fila < 20:
+                tabla[fila][columna] = peso
 
-            for columna in range(6):
-
-                indice = columna * 20 + fila
-
-                if indice < len(lista_pesos):
-                    fila_actual.append(lista_pesos[indice])
-                else:
-                    fila_actual.append("")
-
-            tabla.append(fila_actual)
-
+    
         detalles_completos.append({
-
             "tipo_huevo": d[1],
             "precio_kg": d[2],
             "peso_total": d[3],
             "cantidad_paquetes": d[4],
             "importe": d[5],
             "tabla": tabla
-
         })
 
     conexion.close()
@@ -437,7 +444,7 @@ def ver_liquidacion(id):
 @app.route("/ventas")
 def ventas():
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     cursor.execute("""
@@ -460,14 +467,14 @@ def guardar_venta():
 
     datos = request.get_json()
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     # Buscar cliente
     cursor.execute("""
     SELECT id
     FROM Clientes
-    WHERE nombre = ?
+    WHERE nombre = %s
     """, (datos["cliente"],))
 
     fila = cursor.fetchone()
@@ -486,7 +493,8 @@ def guardar_venta():
         cliente_id,
         importe_total
     )
-    VALUES (?, ?, ?)
+    VALUES (%s, %s, %s)
+    RETURNING id
     """,
     (
         datos["fecha"],
@@ -494,7 +502,7 @@ def guardar_venta():
         datos["importe_total"]
     ))
 
-    liquidacion_id = cursor.lastrowid
+    liquidacion_id = cursor.fetchone()[0]
 
     # Detalles
     for detalle in datos["detalles"]:
@@ -502,10 +510,15 @@ def guardar_venta():
         cursor.execute("""
         SELECT id
         FROM TipoHuevo
-        WHERE nombre = ?
+        WHERE nombre = %s
         """, (detalle["tipo_huevo"],))
 
-        tipo_huevo_id = cursor.fetchone()[0]
+        fila = cursor.fetchone()
+
+        if fila is None:
+            continue
+
+        tipo_huevo_id = fila[0]
 
         cursor.execute("""
         INSERT INTO DetalleVenta
@@ -515,9 +528,11 @@ def guardar_venta():
             precio_kg,
             peso_total,
             cantidad_paquetes,
-            importe
+            importe,
+            columnas
         )
-        VALUES (?, ?, ?, ?, ?, ?)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        RETURNING id
         """,
         (
             liquidacion_id,
@@ -525,24 +540,25 @@ def guardar_venta():
             detalle["precio_kg"],
             detalle["peso_total"],
             detalle["cantidad_paquetes"],
-            detalle["importe"]
+            detalle["importe"],
+            detalle["columnas"]
         ))
 
-        detalle_id = cursor.lastrowid
 
-        for peso in detalle["pesos"]:
+
+        detalle_id = cursor.fetchone()[0]
+
+        for p in detalle["pesos"]:
 
             cursor.execute("""
             INSERT INTO PesoPaqueteVenta
-            (
-                detalle_venta_id,
-                peso
-            )
-            VALUES (?, ?)
+            (detalle_venta_id, peso, posicion)
+            VALUES (%s, %s, %s)
             """,
             (
                 detalle_id,
-                peso
+                p["valor"],
+                p["posicion"]
             ))
 
     conexion.commit()
@@ -555,7 +571,7 @@ def guardar_venta():
 @app.route("/historial_ventas")
 def historial_ventas():
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     cursor.execute("""
@@ -585,7 +601,7 @@ def historial_ventas():
 @app.route("/ver_venta/<int:id>")
 def ver_venta(id):
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     cursor.execute("""
@@ -596,7 +612,7 @@ def ver_venta(id):
     FROM LiquidacionVenta
     INNER JOIN Clientes
         ON LiquidacionVenta.cliente_id = Clientes.id
-    WHERE LiquidacionVenta.id = ?
+    WHERE LiquidacionVenta.id = %s
     """, (id,))
 
     cabecera = cursor.fetchone()
@@ -608,14 +624,15 @@ def ver_venta(id):
         DetalleVenta.precio_kg,
         DetalleVenta.peso_total,
         DetalleVenta.cantidad_paquetes,
-        DetalleVenta.importe
+        DetalleVenta.importe,
+        DetalleVenta.columnas
 
     FROM DetalleVenta
 
     INNER JOIN TipoHuevo
         ON DetalleVenta.tipo_huevo_id = TipoHuevo.id
 
-    WHERE DetalleVenta.liquidacion_venta_id = ?
+    WHERE DetalleVenta.liquidacion_venta_id = %s
     """, (id,))
 
     detalles = cursor.fetchall()
@@ -627,29 +644,24 @@ def ver_venta(id):
         detalle_id = d[0]
 
         cursor.execute("""
-        SELECT peso
+        SELECT peso, posicion
         FROM PesoPaqueteVenta
-        WHERE detalle_venta_id = ?
+        WHERE detalle_venta_id = %s
+        ORDER BY posicion
         """, (detalle_id,))
 
         pesos = cursor.fetchall()
 
-        lista_pesos = [p[0] for p in pesos]
+        columnas = d[6]   # PRIMERO sacar columnas del detalle
 
-        tabla = []
+        tabla = [["" for _ in range(columnas)] for _ in range(20)]
 
-        for fila in range(20):
-            fila_actual = []
+        for peso, posicion in pesos:
+            fila = posicion // columnas
+            columna = posicion % columnas
 
-            for columna in range(6):
-                indice = columna * 20 + fila
-
-                if indice < len(lista_pesos):
-                    fila_actual.append(lista_pesos[indice])
-                else:
-                    fila_actual.append("")
-
-            tabla.append(fila_actual)
+            if fila < 20:
+                tabla[fila][columna] = peso
 
         detalles_completos.append({
             "tipo_huevo": d[1],
@@ -659,6 +671,8 @@ def ver_venta(id):
             "importe": d[5],
             "tabla": tabla
         })
+
+
 
     conexion.close()
 
@@ -671,13 +685,13 @@ def ver_venta(id):
 @app.route("/eliminar_venta/<int:id>")
 def eliminar_venta(id):
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     cursor.execute("""
     SELECT id
     FROM DetalleVenta
-    WHERE liquidacion_venta_id = ?
+    WHERE liquidacion_venta_id = %s
     """, (id,))
 
     detalles = cursor.fetchall()
@@ -686,17 +700,17 @@ def eliminar_venta(id):
 
         cursor.execute("""
         DELETE FROM PesoPaqueteVenta
-        WHERE detalle_venta_id = ?
+        WHERE detalle_venta_id = %s
         """, (d[0],))
 
     cursor.execute("""
     DELETE FROM DetalleVenta
-    WHERE liquidacion_venta_id = ?
+    WHERE liquidacion_venta_id = %s
     """, (id,))
 
     cursor.execute("""
     DELETE FROM LiquidacionVenta
-    WHERE id = ?
+    WHERE id = %s
     """, (id,))
 
     conexion.commit()
@@ -953,15 +967,15 @@ def reportes():
         }
 
 
-        with sqlite3.connect("database.db") as conexion:
-            cursor = conexion.cursor()
+        conexion = conectar_bd()
+        cursor = conexion.cursor()
 
             
 
             # =========================
             # COMPRAS
             # =========================
-            if fecha_compra:
+        if fecha_compra:
 
                 cursor.execute("""
                     SELECT
@@ -978,7 +992,7 @@ def reportes():
                         ON LiquidacionCompra.id = DetalleCompra.liquidacion_compra_id
                     INNER JOIN TipoHuevo
                         ON DetalleCompra.tipo_huevo_id = TipoHuevo.id
-                    WHERE LiquidacionCompra.fecha_compra = ?
+                    WHERE LiquidacionCompra.fecha_compra = %s
                     ORDER BY Proveedores.nombre
                 """, (fecha_compra,))
 
@@ -993,7 +1007,7 @@ def reportes():
             # =========================
             # VENTAS
             # =========================
-            if fecha_venta:
+        if fecha_venta:
 
                 cursor.execute("""
                     SELECT
@@ -1010,7 +1024,7 @@ def reportes():
                         ON LiquidacionVenta.id = DetalleVenta.liquidacion_venta_id
                     INNER JOIN TipoHuevo
                         ON DetalleVenta.tipo_huevo_id = TipoHuevo.id
-                    WHERE LiquidacionVenta.fecha_venta = ?
+                    WHERE LiquidacionVenta.fecha_venta = %s
                     ORDER BY Clientes.nombre
                 """, (fecha_venta,))
 
@@ -1094,7 +1108,7 @@ def reportes():
         perdida = diferencia_kg * precio_promedio
 
         if accion == "guardar_reporte":
-
+            
             compras_json = json.dumps(datos_proveedores)
             ventas_json = json.dumps(datos_clientes)
 
@@ -1103,10 +1117,10 @@ def reportes():
 
             fecha_reporte = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            with sqlite3.connect("database.db") as conexion:
-                cursor = conexion.cursor()
+            conexion = conectar_bd()
+            cursor = conexion.cursor()
 
-                cursor.execute("""
+            cursor.execute("""
                 INSERT INTO Reportes(
                     fecha_reporte,
                     fecha_compra,
@@ -1127,7 +1141,7 @@ def reportes():
                     totales_compra_json,
                     totales_venta_json
                 )
-                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
                 """,
                 (
                 fecha_reporte,
@@ -1148,9 +1162,14 @@ def reportes():
                 ventas_json,
                 totales_compra_json,
                 totales_venta_json
+
+                
             ))
 
-                conexion.commit()
+            conexion.commit()
+            conexion.close()
+
+            return redirect("/reportes")
 
         return render_template(
             "reportes.html",
@@ -1214,7 +1233,7 @@ def reportes():
             precio_promedio=precio_promedio,
             perdida=perdida
 
-    
+            
         )
 
 
@@ -1222,10 +1241,10 @@ def reportes():
 @app.route("/historial_reportes")
 def historial_reportes():
 
-    with sqlite3.connect("database.db") as conexion:
-        cursor = conexion.cursor()
+    conexion = conectar_bd()
+    cursor = conexion.cursor()
 
-        cursor.execute("""
+    cursor.execute("""
             SELECT
                 id,
                 fecha_reporte,
@@ -1236,7 +1255,7 @@ def historial_reportes():
             ORDER BY id DESC
         """)
 
-        reportes = cursor.fetchall()
+    reportes = cursor.fetchall()
 
     return render_template(
         "historial_reportes.html",
@@ -1247,16 +1266,17 @@ def historial_reportes():
 @app.route("/eliminar_reporte/<int:id>")
 def eliminar_reporte(id):
 
-    with sqlite3.connect("database.db") as conexion:
+    conexion = conectar_bd()
 
-        cursor = conexion.cursor()
+    cursor = conexion.cursor()
 
-        cursor.execute(
-            "DELETE FROM Reportes WHERE id=?",
+    cursor.execute(
+            "DELETE FROM Reportes WHERE id=%s",
             (id,)
         )
 
-        conexion.commit()
+    conexion.commit()
+        
 
     return redirect("/historial_reportes")
 
@@ -1264,26 +1284,46 @@ def eliminar_reporte(id):
 def ver_reporte(id):
 
 
-    with sqlite3.connect("database.db") as conexion:
+    conexion = conectar_bd()
 
-        cursor = conexion.cursor()
+    cursor = conexion.cursor()
 
-        cursor.execute(
-            "SELECT * FROM Reportes WHERE id=?",
-            (id,)
-        )
+    cursor.execute("""
+        SELECT
+            id,
+            fecha_reporte,
+            fecha_compra,
+            fecha_venta,
+            inversion_total,
+            venta_total,
+            costo_flete,
+            flete,
+            ganancia_bruta,
+            ganancia,
+            porcentaje_ganancia_bruta,
+            porcentaje_ganancia_inversion,
+            diferencia_kg,
+            precio_promedio,
+            perdida,
+            compras_json,
+            ventas_json,
+            totales_compra_json,
+            totales_venta_json
+        FROM Reportes
+        WHERE id = %s
+        """, (id,))
 
-        reporte = cursor.fetchone()
+    reporte = cursor.fetchone()
 
 
-        if reporte is None:
+    if reporte is None:
             return "Reporte no encontrado"
 
-        compras = json.loads(reporte[15]) if reporte[15] else {}
-        ventas = json.loads(reporte[16]) if reporte[16] else {}
+    compras = json.loads(reporte[15]) if reporte[15] else {}
+    ventas = json.loads(reporte[16]) if reporte[16] else {}
 
-        totales_compra = json.loads(reporte[17]) if reporte[17] else {}
-        totales_venta = json.loads(reporte[18]) if reporte[18] else {}
+    totales_compra = json.loads(reporte[17]) if reporte[17] else {}
+    totales_venta = json.loads(reporte[18]) if reporte[18] else {}
 
     return render_template(
         "ver_reporte.html",
@@ -1297,13 +1337,13 @@ def ver_reporte(id):
 @app.route("/eliminar_liquidacion/<int:id>")
 def eliminar_liquidacion(id):
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     cursor.execute("""
     SELECT id
     FROM DetalleCompra
-    WHERE liquidacion_compra_id = ?
+    WHERE liquidacion_compra_id = %s
     """, (id,))
 
     detalles = cursor.fetchall()
@@ -1312,17 +1352,17 @@ def eliminar_liquidacion(id):
 
         cursor.execute("""
         DELETE FROM PesoPaqueteCompra
-        WHERE detalle_compra_id = ?
+        WHERE detalle_compra_id = %s
         """, (d[0],))
 
     cursor.execute("""
     DELETE FROM DetalleCompra
-    WHERE liquidacion_compra_id = ?
+    WHERE liquidacion_compra_id = %s
     """, (id,))
 
     cursor.execute("""
     DELETE FROM LiquidacionCompra
-    WHERE id = ?
+    WHERE id = %s
     """, (id,))
 
     conexion.commit()
@@ -1334,12 +1374,12 @@ def eliminar_liquidacion(id):
 @app.route("/eliminar_cliente/<int:id>")
 def eliminar_cliente(id):
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     cursor.execute("""
     DELETE FROM Clientes
-    WHERE id = ?
+    WHERE id = %s
     """, (id,))
 
     conexion.commit()
@@ -1351,7 +1391,7 @@ def eliminar_cliente(id):
 @app.route("/editar_cliente/<int:id>", methods=["GET", "POST"])
 def editar_cliente(id):
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     if request.method == "POST":
@@ -1362,10 +1402,10 @@ def editar_cliente(id):
 
         cursor.execute("""
         UPDATE Clientes
-        SET nombre = ?,
-            direccion = ?,
-            distrito = ?
-        WHERE id = ?
+        SET nombre = %s,
+            direccion = %s,
+            distrito = %s
+        WHERE id = %s
         """,
         (
             nombre,
@@ -1383,7 +1423,7 @@ def editar_cliente(id):
     cursor.execute("""
     SELECT *
     FROM Clientes
-    WHERE id = ?
+    WHERE id = %s
     """,(id,))
 
     cliente = cursor.fetchone()
@@ -1398,7 +1438,7 @@ def editar_cliente(id):
 @app.route("/competidores", methods=["GET", "POST"])
 def competidores():
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     if request.method == "POST":
@@ -1410,7 +1450,7 @@ def competidores():
         cursor.execute("""
         INSERT INTO Competidores
         (nombre, direccion, distrito)
-        VALUES (?, ?, ?)
+        VALUES (%s, %s, %s)
         """, (nombre, direccion, distrito))
 
         conexion.commit()
@@ -1438,12 +1478,12 @@ def competidores():
 @app.route("/eliminar_competidor/<int:id>")
 def eliminar_competidor(id):
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     cursor.execute("""
     DELETE FROM Competidores
-    WHERE id = ?
+    WHERE id = %s
     """, (id,))
 
     conexion.commit()
@@ -1455,7 +1495,7 @@ def eliminar_competidor(id):
 @app.route("/editar_competidor/<int:id>", methods=["GET", "POST"])
 def editar_competidor(id):
 
-    conexion = sqlite3.connect("database.db")
+    conexion = conectar_bd()
     cursor = conexion.cursor()
 
     if request.method == "POST":
@@ -1466,10 +1506,10 @@ def editar_competidor(id):
 
         cursor.execute("""
         UPDATE Competidores
-        SET nombre = ?,
-            direccion = ?,
-            distrito = ?
-        WHERE id = ?
+        SET nombre = %s,
+            direccion = %s,
+            distrito = %s
+        WHERE id = %s
         """,
         (
             nombre,
@@ -1487,7 +1527,7 @@ def editar_competidor(id):
     cursor.execute("""
     SELECT *
     FROM Competidores
-    WHERE id = ?
+    WHERE id = %s
     """,(id,))
 
     competidor = cursor.fetchone()
@@ -1513,25 +1553,24 @@ def historial_precios():
 
     elif periodo == "semana":
 
-        campo_fecha = "strftime('%Y-%W', LiquidacionCompra.fecha_compra)"
-        campo_fecha_venta = "strftime('%Y-%W', LiquidacionVenta.fecha_venta)"
-
+        campo_fecha = "DATE_TRUNC('week', LiquidacionCompra.fecha_compra)"
+        campo_fecha_venta = "DATE_TRUNC('week', LiquidacionVenta.fecha_venta)"
     elif periodo == "mes":
 
-        campo_fecha = "strftime('%Y-%m', LiquidacionCompra.fecha_compra)"
-        campo_fecha_venta = "strftime('%Y-%m', LiquidacionVenta.fecha_venta)"
+        campo_fecha = "TO_CHAR(LiquidacionCompra.fecha_compra, 'YYYY-MM')"
+        campo_fecha_venta = "TO_CHAR(LiquidacionVenta.fecha_venta, 'YYYY-MM')"
 
     else:
 
         campo_fecha = "strftime('%Y', LiquidacionCompra.fecha_compra)"
         campo_fecha_venta = "strftime('%Y', LiquidacionVenta.fecha_venta)"
 
-    with sqlite3.connect("database.db") as conexion:
+    conexion = conectar_bd()
 
-        cursor = conexion.cursor()
+    cursor = conexion.cursor()
 
         # COMPRAS
-        cursor.execute(f"""
+    cursor.execute(f"""
         SELECT
             {campo_fecha},
             TipoHuevo.nombre,
@@ -1554,11 +1593,11 @@ def historial_precios():
 
         """)
 
-        compras = cursor.fetchall()
+    compras = cursor.fetchall()
 
 
         # VENTAS
-        cursor.execute(f"""
+    cursor.execute(f"""
             SELECT
                 {campo_fecha_venta},
                 TipoHuevo.nombre,
@@ -1580,7 +1619,7 @@ def historial_precios():
                 {campo_fecha_venta}
         """)
 
-        ventas = cursor.fetchall()
+    ventas = cursor.fetchall()
 
     # =========================
     # DATOS PARA GRAFICO COMPRAS

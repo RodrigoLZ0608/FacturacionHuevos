@@ -23,7 +23,7 @@
 
             <div class="field">
                 <label>Fecha</label>
-                <input type="date" id="fechaVenta" readonly>
+                <input type="date" id="fechaVenta" >
             </div>
 
             <div class="field">
@@ -72,25 +72,32 @@
     <!-- COMERCIAL -->
     <div id="seccionComercial" style="display:none;">
 
-        <h2>COMERCIAL</h2>
+        <div class="titulo-tabla">
+
+            <h2>COMERCIAL</h2>
+
+            <div class="acciones-tabla">
+        <button type="button"
+                class="btn-columna"
+                onclick="agregarColumna('tablaComercial','comercial')">
+            ➕
+        </button>
+
+        <button type="button"
+                class="btn-columna eliminar"
+                onclick="eliminarColumna('tablaComercial','comercial')">
+            ➖
+        </button>
+    </div>
+
+        </div>
 
         <div class="contenido-tabla">
 
             <table id="tablaComercial">
 
-                <thead>
-                    <tr>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
-                        <th>5</th>
-                        <th>6</th>
-                    </tr>
-                </thead>
-
-                <tbody id="bodyComercial"></tbody>
-
+                <tbody id="bodyComercial">
+                </tbody>
             </table>
 
             <div class="pesos-rapidos">
@@ -117,42 +124,51 @@
 
         <br>
 
-        Precio Kg Comercial:
-        <input type="number" id="precioComercial">
+        <div class="resumen-item">
+            <label>Precio Kg Comercial</label>
+            <input type="number" id="precioComercial" step="0.01">
+        </div>
 
-        <br><br>
+        <div class="resumen-item">
+            <label>Peso Total Comercial</label>
+            <input type="number" id="pesoTotalComercial" readonly>
+        </div>
 
-        Peso Total Comercial:
-        <input type="number" id="pesoTotalComercial" readonly>
-
-        <br><br>
-
-        Importe Comercial:
-        <input type="number" id="importeComercial" readonly>
-
+        <div class="resumen-item">
+            <label>Importe Comercial</label>
+            <input type="number" id="importeComercial" readonly>
+        </div>
     </div>
 
     <!-- JUMBO -->
     <div id="seccionJumbo" style="display:none;">
 
-        <h2>JUMBO</h2>
+        <div class="titulo-tabla">
+
+            <h2>JUMBO</h2>
+
+            <div class="acciones-tabla">
+        <button type="button"
+                class="btn-columna"
+                onclick="agregarColumna('tablaJumbo','jumbo')">
+            ➕
+        </button>
+
+        <button type="button"
+                class="btn-columna eliminar"
+                onclick="eliminarColumna('tablaJumbo','jumbo')">
+            ➖
+        </button>
+    </div>
+
+        </div>
 
         <div class="contenido-tabla">
 
             <table id="tablaJumbo">
 
-                <thead>
-                    <tr>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
-                        <th>5</th>
-                        <th>6</th>
-                    </tr>
-                </thead>
-
-                <tbody id="bodyJumbo"></tbody>
+                <tbody id="bodyJumbo">
+                </tbody>
 
             </table>
 
@@ -180,42 +196,51 @@
 
         <br>
 
-        Precio Kg Jumbo:
-        <input type="number" id="precioJumbo">
+        <div class="resumen-item">
+            <label>Precio Kg Jumbo</label>
+            <input type="number" id="precioJumbo" step="0.01">
+        </div>
 
-        <br><br>
+        <div class="resumen-item">
+            <label>Peso Total Jumbo</label>
+            <input type="number" id="pesoTotalJumbo" readonly>
+        </div>
 
-        Peso Total Jumbo:
-        <input type="number" id="pesoTotalJumbo" readonly>
-
-        <br><br>
-
-        Importe Jumbo:
-        <input type="number" id="importeJumbo" readonly>
-
+        <div class="resumen-item">
+            <label>Importe Jumbo</label>
+            <input type="number" id="importeJumbo" readonly>
+        </div>
     </div>
 
     <!-- PARDO -->
     <div id="seccionPardo" style="display:none;">
 
-        <h2>PARDO</h2>
+        <div class="titulo-tabla">
+
+            <h2>PARDO</h2>
+
+            <div class="acciones-tabla">
+        <button type="button"
+                class="btn-columna"
+                onclick="agregarColumna('tablaPardo','pardo')">
+            ➕
+        </button>
+
+        <button type="button"
+                class="btn-columna eliminar"
+                onclick="eliminarColumna('tablaPardo','pardo')">
+            ➖
+        </button>
+    </div>
+
+        </div>
 
         <div class="contenido-tabla">
 
             <table id="tablaPardo">
 
-                <thead>
-                    <tr>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
-                        <th>5</th>
-                        <th>6</th>
-                    </tr>
-                </thead>
-
-                <tbody id="bodyPardo"></tbody>
+                <tbody id="bodyPardo">
+                </tbody>
 
             </table>
 
@@ -243,19 +268,20 @@
 
         <br>
 
-        Precio Kg Pardo:
-        <input type="number" id="precioPardo">
+        <div class="resumen-item">
+            <label>Precio Kg Pardo</label>
+            <input type="number" id="precioPardo" step="0.01">
+        </div>
 
-        <br><br>
+        <div class="resumen-item">
+            <label>Peso Total Pardo</label>
+            <input type="number" id="pesoTotalPardo" readonly>
+        </div>
 
-        Peso Total Pardo:
-        <input type="number" id="pesoTotalPardo" readonly>
-
-        <br><br>
-
-        Importe Pardo:
-        <input type="number" id="importePardo" readonly>
-
+        <div class="resumen-item">
+            <label>Importe Pardo</label>
+            <input type="number" id="importePardo" readonly>
+        </div>
     </div>
 
 </div>
