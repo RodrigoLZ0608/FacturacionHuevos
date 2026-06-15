@@ -187,6 +187,74 @@ function obtenerMatriz(tipo){
 
 document.addEventListener("keydown", function(e){
 
+    const teclas = ["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"];
+
+    if (!teclas.includes(e.key)) return;
+
+    let active = document.activeElement;
+
+    if (!active.classList.contains("peso")) return;
+
+    e.preventDefault();
+
+    let tipo = active.classList[1];
+    let matriz = obtenerMatriz(tipo);
+
+    let filas = matriz[0].length;
+    let columnas = matriz.length;
+
+    let colActual = -1;
+    let filaActual = -1;
+
+    // buscar posición actual
+    for (let c = 0; c < columnas; c++) {
+        for (let f = 0; f < filas; f++) {
+            if (matriz[c][f] === active) {
+                colActual = c;
+                filaActual = f;
+                break;
+            }
+        }
+        if (colActual !== -1) break;
+    }
+
+    let nuevaCol = colActual;
+    let nuevaFila = filaActual;
+
+    switch(e.key){
+
+        case "ArrowUp":
+            nuevaFila--;
+            break;
+
+        case "ArrowDown":
+            nuevaFila++;
+            break;
+
+        case "ArrowLeft":
+            nuevaCol--;
+            break;
+
+        case "ArrowRight":
+            nuevaCol++;
+            break;
+    }
+
+    // validar límites
+    if (
+        nuevaCol >= 0 &&
+        nuevaCol < columnas &&
+        nuevaFila >= 0 &&
+        nuevaFila < filas &&
+        matriz[nuevaCol][nuevaFila]
+    ) {
+        matriz[nuevaCol][nuevaFila].focus();
+    }
+
+});
+
+document.addEventListener("keydown", function(e){
+
     if (e.key !== "Enter") return;
 
     let active = document.activeElement;
