@@ -364,14 +364,20 @@
     text-align: center;
 }
 
-.total-comercial{
-    background:#ffd6ee;
+.total-comercial input{
+    background:#ff6ac6 !important;
+    color:white;
+    font-weight:bold;
 }
 
-.total-jumbo{
-    background:#d5f5e3;
+.total-jumbo input{
+    background:#27ae60 !important;
+    color:black;
+    font-weight:bold;
 }
 
-.total-pardo{
-    background:#fdebd0;
+.total-pardo input{
+    background:#e67e22 !important;
+    color:black;
+    font-weight:bold;
 }
