@@ -217,23 +217,23 @@ document.addEventListener("keydown", function(e){
         if (colActual !== -1) break;
     }
 
-    // ↓ bajar en columna
-    for (let f = filaActual + 1; f < filas; f++) {
-        if (matriz[colActual][f] && matriz[colActual][f].value === "") {
-            matriz[colActual][f].focus();
-            return;
-        }
-    }
-
-    // → siguiente columna
-    for (let c = colActual + 1; c < columnas; c++) {
-        for (let f = 0; f < filas; f++) {
-            if (matriz[c][f] && matriz[c][f].value === "") {
-                matriz[c][f].focus();
+    /// ↓ bajar en columna
+        for (let f = filaActual + 1; f < filas; f++) {
+            if (matriz[colActual][f]) {
+                matriz[colActual][f].focus();
                 return;
             }
         }
-    }
+
+        // → siguiente columna
+        for (let c = colActual + 1; c < columnas; c++) {
+            for (let f = 0; f < filas; f++) {
+                if (matriz[c][f]) {
+                    matriz[c][f].focus();
+                    return;
+                }
+            }
+        }
 
 });
 
