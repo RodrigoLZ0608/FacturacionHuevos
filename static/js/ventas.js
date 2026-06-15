@@ -221,31 +221,34 @@ function agregarPesoAutomatico(valor, tipo){
 
 function obtenerMatriz(tipo){
 
-    let tabla = document.querySelector("#tabla" + tipo.charAt(0).toUpperCase() + tipo.slice(1));
-    let filasDOM = tabla.querySelectorAll("tbody tr");
+    let tabla = document.querySelector(
+        "#tabla" +
+        tipo.charAt(0).toUpperCase() +
+        tipo.slice(1)
+    );
 
-    let filas = 20;
-    let columnas = columnasActuales[tipo] || 1;
+    let filasDOM = tabla.querySelectorAll(
+        "tbody tr:not(." + "total-" + tipo + ")"
+    );
 
     let matriz = [];
 
-    for (let c = 0; c < columnas; c++) {
-        matriz[c] = [];
-    }
-
-    filasDOM.forEach((tr, filaIndex) => {
+    filasDOM.forEach((tr, filaIndex)=>{
 
         let inputs = tr.querySelectorAll("input." + tipo);
 
-        inputs.forEach((input, colIndex) => {
+        inputs.forEach((input, colIndex)=>{
 
-            if (matriz[colIndex]) {
-                matriz[colIndex][filaIndex] = input;
+            if(!matriz[colIndex]){
+                matriz[colIndex] = [];
             }
+
+            matriz[colIndex][filaIndex] = input;
+
         });
 
     });
-
+    console.log(matriz);
     return matriz;
 }
 
