@@ -81,6 +81,34 @@
     columnasActuales[clase]++;
 }
 
+function actualizarTotalesColumnas(tipo){
+
+    let matriz = obtenerMatriz(tipo);
+
+    let tabla =
+    document.querySelector(
+        "#tabla" +
+        tipo.charAt(0).toUpperCase() +
+        tipo.slice(1)
+    );
+
+    let filaTotal =
+    tabla.querySelector(".total-" + tipo);
+
+    matriz.forEach((columna, indice)=>{
+
+        let suma = 0;
+
+        columna.forEach(input=>{
+            suma += Number(input.value) || 0;
+        });
+
+        filaTotal.children[indice]
+            .querySelector("input")
+            .value = suma.toFixed(2);
+    });
+}
+
     function eliminarColumna(idTabla, clase){
 
         let tabla = document.getElementById(idTabla);
