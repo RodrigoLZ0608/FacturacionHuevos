@@ -363,3 +363,15 @@
     border-radius: 6px !important;
     text-align: center;
 }
+
+.total-comercial{
+    background:#ffd6ee;
+}
+
+.total-jumbo{
+    background:#d5f5e3;
+}
+
+.total-pardo{
+    background:#fdebd0;
+}

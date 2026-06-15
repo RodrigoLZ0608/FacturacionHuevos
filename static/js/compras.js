@@ -25,30 +25,62 @@
             </tr>
             `;
         }
+        let colorClase = "total-" + clase;
+
+        body.innerHTML += `
+        <tr class="${colorClase}">
+            <td>
+                <input
+                    type="text"
+                    readonly
+                    class="total-columna"
+                    value="0.00">
+            </td>
+        </tr>
+        `;
     }
+
 
     function agregarColumna(idTabla, clase){
 
-        let tabla = document.getElementById(idTabla);
-        let filas = tabla.querySelectorAll("tbody tr");
+    let tabla = document.getElementById(idTabla);
+    let filas = tabla.querySelectorAll("tbody tr");
 
-        filas.forEach((fila, index) => {
+    filas.forEach(fila => {
+
+        if(fila.classList.contains("total-" + clase)){
+
+            let td = document.createElement("td");
+
+            td.innerHTML = `
+                <input
+                    type="text"
+                    readonly
+                    class="total-columna"
+                    value="0.00">
+            `;
+
+            fila.appendChild(td);
+
+        }else{
 
             let td = document.createElement("td");
 
             let input = document.createElement("input");
+
             input.type = "number";
             input.step = "0.01";
             input.className = "peso " + clase;
 
             td.appendChild(input);
 
-            // 🔥 IMPORTANTE: insertar SIEMPRE al final de la columna lógica
             fila.appendChild(td);
-        });
+        }
+    });
 
-        columnasActuales[clase]++;
-    }
+    columnasActuales[clase]++;
+}
+
     function eliminarColumna(idTabla, clase){
 
         let tabla = document.getElementById(idTabla);
@@ -71,6 +103,7 @@
     let totalComercial=0;
     let totalJumbo=0;
     let totalPardo=0;
+    
 
     document.querySelectorAll(".comercial").forEach(x=>{
     totalComercial += Number(x.value)||0;
@@ -122,6 +155,10 @@
 
     document.getElementById("importeGeneral").value =
     (importeComercial + importeJumbo + importePardo).toFixed(2);
+
+    actualizarTotalesColumnas("comercial");
+    actualizarTotalesColumnas("jumbo");
+    actualizarTotalesColumnas("pardo");
 
     }
 
