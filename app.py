@@ -419,6 +419,23 @@ def ver_liquidacion(id):
             if fila < 20:
                 tabla[fila][columna] = peso
 
+        totales = []
+
+        for col in range(columnas):
+
+            total_columna = 0
+
+            for fila in range(20):
+
+                valor = tabla[fila][col]
+
+                if valor != "":
+                    total_columna += float(valor)
+
+            totales.append(round(total_columna, 2))
+
+        tabla.append(totales)
+
     
         detalles_completos.append({
             "tipo_huevo": d[1],
