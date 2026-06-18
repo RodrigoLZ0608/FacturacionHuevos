@@ -141,17 +141,20 @@ prepararFilaTotal("bodyPardo","pardo");
     let totalPardo=0;
     
 
-    document.querySelectorAll(".comercial").forEach(x=>{
-    totalComercial += Number(x.value)||0;
-    });
+    document.querySelectorAll("#bodyComercial tr:not(.total-comercial) .comercial")
+.forEach(x=>{
+    totalComercial += Number(x.value) || 0;
+});
 
-    document.querySelectorAll(".jumbo").forEach(x=>{
-    totalJumbo += Number(x.value)||0;
-    });
+    document.querySelectorAll("#bodyJumbo tr:not(.total-jumbo) .jumbo")
+.forEach(x=>{
+    totalComercial += Number(x.value) || 0;
+});
 
-    document.querySelectorAll(".pardo").forEach(x=>{
-    totalPardo += Number(x.value)||0;
-    });
+    document.querySelectorAll("#bodyPardo tr:not(.total-pardo) .pardo")
+.forEach(x=>{
+    totalComercial += Number(x.value) || 0;
+});
 
     document.getElementById("pesoTotalComercial").value =
     totalComercial.toFixed(2);
