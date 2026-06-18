@@ -364,20 +364,16 @@
     text-align: center;
 }
 
-.total-comercial input{
+/* FILA TOTAL DE COLUMNAS */
+
+.total-comercial td{
     background:#ff6ac6 !important;
-    color:white;
-    font-weight:bold;
 }
 
-.total-jumbo input{
+.total-jumbo td{
     background:#27ae60 !important;
-    color:black;
-    font-weight:bold;
 }
 
-.total-pardo input{
+.total-pardo td{
     background:#e67e22 !important;
-    color:black;
-    font-weight:bold;
 }
