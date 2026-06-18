@@ -25,19 +25,6 @@ function generarTabla(id, clase){
         </tr>
         `;
     }
-    let colorClase = "total-" + clase;
-
-    body.innerHTML += `
-    <tr class="${colorClase}">
-        <td>
-            <input
-                type="text"
-                readonly
-                class="total-columna"
-                value="0.00">
-        </td>
-    </tr>
-    `;
 }
 
 function agregarColumna(idTabla, clase){
@@ -61,39 +48,26 @@ function agregarColumna(idTabla, clase){
 
             fila.appendChild(td);
 
+        }else{
+
+            let td = document.createElement("td");
+
+            let input = document.createElement("input");
+
+            input.type = "number";
+            input.step = "0.01";
+            input.className = "peso " + clase;
+
+            td.appendChild(input);
+
+            fila.appendChild(td);
         }
     });
 
     columnasActuales[clase]++;
 }
 
-function actualizarTotalesColumnas(tipo){
 
-    let matriz = obtenerMatriz(tipo);
-
-    let tabla =
-    document.querySelector(
-        "#tabla" +
-        tipo.charAt(0).toUpperCase() +
-        tipo.slice(1)
-    );
-
-    let filaTotal =
-    tabla.querySelector(".total-" + tipo);
-
-    matriz.forEach((columna, indice)=>{
-
-        let suma = 0;
-
-        columna.forEach(input=>{
-            suma += Number(input.value) || 0;
-        });
-
-        filaTotal.children[indice]
-            .querySelector("input")
-            .value = suma.toFixed(2);
-    });
-}
 
 function eliminarColumna(idTabla, clase){
 
@@ -149,11 +123,6 @@ function calcular(){
 
     document.getElementById("importeGeneral").value =
         (importeComercial + importeJumbo + importePardo).toFixed(2);
-
-
-    actualizarTotalesColumnas("comercial");
-    actualizarTotalesColumnas("jumbo");
-    actualizarTotalesColumnas("pardo");    
 }
 
 document.addEventListener("input", calcular);
