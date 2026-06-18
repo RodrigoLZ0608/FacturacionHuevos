@@ -41,7 +41,7 @@ function generarTabla(id, clase){
 }
 
 
-    function agregarColumna(idTabla, clase){
+function agregarColumna(idTabla, clase){
 
     let tabla = document.getElementById(idTabla);
     let filas = tabla.querySelectorAll("tbody tr");
@@ -50,13 +50,13 @@ function generarTabla(id, clase){
 
         let td = document.createElement("td");
 
-        // fila total
         if (fila.classList.contains("total-" + clase)) {
 
             let input = document.createElement("input");
             input.type = "text";
             input.readOnly = true;
-            input.className = "total-columna";
+
+            input.classList.add("total-columna");
             input.value = "0.00";
 
             td.appendChild(input);
@@ -66,7 +66,9 @@ function generarTabla(id, clase){
             let input = document.createElement("input");
             input.type = "number";
             input.step = "0.01";
-            input.className = "peso " + clase;
+
+            input.classList.add("peso");
+            input.classList.add(clase);
 
             td.appendChild(input);
         }
