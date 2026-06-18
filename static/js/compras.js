@@ -12,38 +12,19 @@
 
         body.innerHTML = "";
 
-        for(let i=0;i<20;i++){
+        for(let i=0;i<21;i++){
 
-    body.innerHTML += `
-    <tr>
-        <td>
-            <input
-                type="number"
-                class="peso ${clase}"
-                step="0.01">
-        </td>
-    </tr>
-    `;
-}
-
-
-// fila 21 total
-body.innerHTML += `
-
-<tr class="total-${clase}">
-
-    <td>
-        <input
-            type="text"
-            readonly
-            class="total-columna"
-            value="0.00">
-    </td>
-
-</tr>
-
-`;
-        
+            body.innerHTML += `
+            <tr>
+                <td>
+                    <input
+                        type="number"
+                        class="peso ${clase}"
+                        step="0.01">
+                </td>
+            </tr>
+            `;
+        }
     }
 
 
