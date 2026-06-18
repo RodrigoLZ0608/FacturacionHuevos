@@ -12,7 +12,7 @@ function generarTabla(id, clase){
 
     body.innerHTML = "";
 
-    for(let i=0;i<20;i++){
+    for(let i=0;i<21;i++){
 
         body.innerHTML += `
         <tr>
@@ -27,24 +27,20 @@ function generarTabla(id, clase){
     }
 
 
-    // fila 21 total
-    let tr = document.createElement("tr");
+    // convertir la fila 21 en total
+    let ultimaFila = body.lastElementChild;
 
-    tr.className = "total-" + clase;
+    ultimaFila.classList.add("total-" + clase);
 
-
-    tr.innerHTML = `
+    ultimaFila.innerHTML = `
         <td>
             <input
-            type="text"
-            readonly
-            class="total-columna"
-            value="0.00">
+                type="text"
+                readonly
+                class="total-columna"
+                value="0.00">
         </td>
     `;
-
-
-    body.appendChild(tr);
 
 }
 
@@ -52,45 +48,41 @@ function generarTabla(id, clase){
     function agregarColumna(idTabla, clase){
 
     let tabla = document.getElementById(idTabla);
-
     let filas = tabla.querySelectorAll("tbody tr");
 
 
-    filas.forEach(fila=>{
+    filas.forEach(fila => {
 
 
-        // si es la fila total
         if(fila.classList.contains("total-" + clase)){
 
 
-            fila.innerHTML += `
+            let td = document.createElement("td");
 
-            <td>
+            td.innerHTML = `
                 <input
-                type="text"
-                readonly
-                class="total-columna"
-                value="0.00">
-            </td>
-
+                    type="text"
+                    readonly
+                    class="total-columna"
+                    value="0.00">
             `;
+
+            fila.appendChild(td);
 
 
         }else{
 
 
-            fila.innerHTML += `
+            let td = document.createElement("td");
 
-            <td>
-
+            td.innerHTML = `
                 <input
-                type="number"
-                step="0.01"
-                class="peso ${clase}">
-
-            </td>
-
+                    type="number"
+                    step="0.01"
+                    class="peso ${clase}">
             `;
+
+            fila.appendChild(td);
 
         }
 
