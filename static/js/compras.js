@@ -53,6 +53,26 @@ function agregarFilaTotal(idTabla, clase){
     tbody.appendChild(tr);
 }
 
+function crearTotal(idTabla, clase){
+
+    let tabla = document.getElementById(idTabla);
+
+    let fila = tabla.querySelectorAll("tbody tr")[20];
+
+    fila.classList.add("total-" + clase);
+
+
+    fila.innerHTML = `
+        <td>
+            <input
+            type="text"
+            readonly
+            class="total-columna"
+            value="0.00">
+        </td>
+    `;
+}
+
 
     function agregarColumna(idTabla, clase){
 
