@@ -25,53 +25,8 @@
             </tr>
             `;
         }
+        
     }
-
-function agregarFilaTotal(idTabla, clase){
-
-    let tabla = document.getElementById(idTabla);
-    let tbody = tabla.querySelector("tbody");
-
-    let tr = document.createElement("tr");
-
-    tr.classList.add("total-" + clase);
-
-
-    let td = document.createElement("td");
-
-    td.innerHTML = `
-        <input
-            type="text"
-            readonly
-            class="total-columna"
-            value="0.00">
-    `;
-
-
-    tr.appendChild(td);
-
-    tbody.appendChild(tr);
-}
-
-function crearTotal(idTabla, clase){
-
-    let tabla = document.getElementById(idTabla);
-
-    let fila = tabla.querySelectorAll("tbody tr")[20];
-
-    fila.classList.add("total-" + clase);
-
-
-    fila.innerHTML = `
-        <td>
-            <input
-            type="text"
-            readonly
-            class="total-columna"
-            value="0.00">
-        </td>
-    `;
-}
 
 
     function agregarColumna(idTabla, clase){
@@ -114,8 +69,6 @@ function crearTotal(idTabla, clase){
     columnasActuales[clase]++;
 }
 
-
-
 function actualizarTotalesColumnas(tipo){
 
     let matriz = obtenerMatriz(tipo);
@@ -138,13 +91,9 @@ function actualizarTotalesColumnas(tipo){
             suma += Number(input.value) || 0;
         });
 
-        if(filaTotal.children[indice]){
-
-    filaTotal.children[indice]
-    .querySelector("input")
-    .value = suma.toFixed(2);
-
-}
+        filaTotal.children[indice]
+            .querySelector("input")
+            .value = suma.toFixed(2);
     });
 }
 
@@ -165,11 +114,6 @@ function actualizarTotalesColumnas(tipo){
     generarTabla("bodyComercial","comercial");
     generarTabla("bodyJumbo","jumbo");
     generarTabla("bodyPardo","pardo");
-
-
-    agregarFilaTotal("tablaComercial","comercial");
-    agregarFilaTotal("tablaJumbo","jumbo");
-    agregarFilaTotal("tablaPardo","pardo");
     function calcular(){
 
     let totalComercial=0;
@@ -177,15 +121,15 @@ function actualizarTotalesColumnas(tipo){
     let totalPardo=0;
     
 
-    document.querySelectorAll("input.comercial:not(.total-columna)").forEach(x=>{
+    document.querySelectorAll(".comercial").forEach(x=>{
     totalComercial += Number(x.value)||0;
     });
 
-    document.querySelectorAll("input.jumbo:not(.total-columna)").forEach(x=>{
+    document.querySelectorAll(".jumbo").forEach(x=>{
     totalJumbo += Number(x.value)||0;
     });
 
-    document.querySelectorAll("input.pardo:not(.total-columna)").forEach(x=>{
+    document.querySelectorAll(".pardo").forEach(x=>{
     totalPardo += Number(x.value)||0;
     });
 
@@ -525,7 +469,7 @@ function actualizarTotalesColumnas(tipo){
 
         let pesos = [];
 
-        document.querySelectorAll("input." + clase + ":not(.total-columna)")
+        document.querySelectorAll("." + clase)
     .forEach((x, index) => {
 
         if (x.value !== "") {
