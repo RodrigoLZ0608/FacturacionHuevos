@@ -364,16 +364,16 @@
     text-align: center;
 }
 
-/* FILA TOTAL DE COLUMNAS */
+/* FILA TOTAL */
 
 .total-comercial td{
-    background:#ff6ac6 !important;
+    background:#ff6ac6;
 }
 
 .total-jumbo td{
-    background:#27ae60 !important;
+    background:#27ae60;
 }
 
 .total-pardo td{
-    background:#e67e22 !important;
+    background:#e67e22;
 }
