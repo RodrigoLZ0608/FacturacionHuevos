@@ -145,15 +145,15 @@ function actualizarTotalesColumnas(tipo){
     let totalPardo=0;
     
 
-    document.querySelectorAll(".comercial").forEach(x=>{
+    document.querySelectorAll("input.comercial:not(.total-columna)").forEach(x=>{
     totalComercial += Number(x.value)||0;
     });
 
-    document.querySelectorAll(".jumbo").forEach(x=>{
+    document.querySelectorAll("input.jumbo:not(.total-columna)").forEach(x=>{
     totalJumbo += Number(x.value)||0;
     });
 
-    document.querySelectorAll(".pardo").forEach(x=>{
+    document.querySelectorAll("input.pardo:not(.total-columna)").forEach(x=>{
     totalPardo += Number(x.value)||0;
     });
 
@@ -493,7 +493,7 @@ function actualizarTotalesColumnas(tipo){
 
         let pesos = [];
 
-        document.querySelectorAll("." + clase)
+        document.querySelectorAll("input." + clase + ":not(.total-columna)")
     .forEach((x, index) => {
 
         if (x.value !== "") {
