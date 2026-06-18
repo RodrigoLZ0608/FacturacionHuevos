@@ -27,26 +27,29 @@
         }
     }
 
-    function agregarFilaTotal(idTabla, clase){
+function agregarFilaTotal(idTabla, clase){
 
     let tabla = document.getElementById(idTabla);
     let tbody = tabla.querySelector("tbody");
 
     let tr = document.createElement("tr");
+
     tr.classList.add("total-" + clase);
 
-    // una celda (puedes extender si tienes más columnas)
+
     let td = document.createElement("td");
 
     td.innerHTML = `
         <input
             type="text"
             readonly
-            class="total-columna total-${clase}"
+            class="total-columna"
             value="0.00">
     `;
 
+
     tr.appendChild(td);
+
     tbody.appendChild(tr);
 }
 
@@ -115,9 +118,13 @@ function actualizarTotalesColumnas(tipo){
             suma += Number(input.value) || 0;
         });
 
-        filaTotal.children[indice]
-            .querySelector("input")
-            .value = suma.toFixed(2);
+        if(filaTotal.children[indice]){
+
+    filaTotal.children[indice]
+    .querySelector("input")
+    .value = suma.toFixed(2);
+
+}
     });
 }
 
@@ -138,6 +145,11 @@ function actualizarTotalesColumnas(tipo){
     generarTabla("bodyComercial","comercial");
     generarTabla("bodyJumbo","jumbo");
     generarTabla("bodyPardo","pardo");
+
+
+    agregarFilaTotal("tablaComercial","comercial");
+    agregarFilaTotal("tablaJumbo","jumbo");
+    agregarFilaTotal("tablaPardo","pardo");
     function calcular(){
 
     let totalComercial=0;
