@@ -530,26 +530,29 @@ function actualizarTotalesColumnas(tipo){
 
         let pesos = [];
 
-        document.querySelectorAll("." + clase)
-    .forEach((x, index) => {
+document.querySelectorAll("." + clase)
+.forEach((x, index) => {
 
-        if (x.value !== "") {
+    let valor = Number(x.value);
 
-            let filas = 20;
-            let posicion = index;
+    if(!isNaN(valor) && valor > 0){
 
-            pesos.push({
-                valor: Number(x.value),
-                posicion: posicion
-            });
+        pesos.push({
 
-        }
-    });
+            valor: valor,
+
+            posicion:index
+
+        });
+
+    }
+
+});
 
 
-        if(pesos.length==0)
-            return;
-
+        if(pesos.length === 0){
+    return;
+}
 
         datos.detalles.push({
 
