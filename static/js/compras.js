@@ -8,46 +8,24 @@
 
     function generarTabla(id, clase){
 
-    let body = document.getElementById(id);
+        let body = document.getElementById(id);
 
-    body.innerHTML = "";
+        body.innerHTML = "";
 
+        for(let i=0;i<20;i++){
 
-    // 20 filas de pesos
-    for(let i=0;i<20;i++){
-
-        body.innerHTML += `
-        <tr>
-            <td>
-                <input
-                    type="number"
-                    class="peso ${clase}"
-                    step="0.01">
-            </td>
-        </tr>
-        `;
+            body.innerHTML += `
+            <tr>
+                <td>
+                    <input
+                        type="number"
+                        class="peso ${clase}"
+                        step="0.01">
+                </td>
+            </tr>
+            `;
+        }
     }
-
-
-    // fila 21 TOTAL
-    body.innerHTML += `
-
-    <tr class="total-${clase}">
-
-        <td>
-            <input
-                type="text"
-                readonly
-                class="total-columna"
-                value="0.00">
-        </td>
-
-    </tr>
-
-    `;
-
-}
-    
 
 
     function agregarColumna(idTabla, clase){
@@ -112,13 +90,9 @@ function actualizarTotalesColumnas(tipo){
             suma += Number(input.value) || 0;
         });
 
-        if(filaTotal.children[indice]){
-
-            filaTotal.children[indice]
+        filaTotal.children[indice]
             .querySelector("input")
             .value = suma.toFixed(2);
-
-}
     });
 }
 
