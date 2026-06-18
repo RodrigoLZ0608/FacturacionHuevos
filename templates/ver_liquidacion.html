@@ -24,7 +24,7 @@ h1{
     max-width:225px;
     margin:auto;
     background:white;
-    padding:7px;
+    margin:0 10px 0 10px;
     border-radius:12px;
     box-shadow:0 3px 10px rgba(0,0,0,0.08);
     margin-bottom:20px;
@@ -37,7 +37,7 @@ h1{
 
 .detalle{
     width:max-content;
-    margin:2px auto;
+    margin:5px auto;
     background:white;
     padding:4px;
     border-radius:12px;
@@ -100,9 +100,16 @@ button:hover{
     margin-top:25px;
 }
 
-.fila-total td{
-    background:#f796d0 !important;
-    font-weight:bold;
+.comercial td{
+    background:#ff6ac6 !important;
+}
+
+.extra td{
+    background:#27ae60 !important;
+}
+
+.jumbo td{
+    background:#e67e22 !important;
 }
 
 </style>
@@ -130,7 +137,7 @@ button:hover{
     <!-- 🟢 TABLA DE PESOS (ARREGLO SIMPLE) -->
     <table>
         {% for fila in d.tabla %}
-        <tr {% if loop.last %}class="fila-total"{% endif %}>
+        <tr {% if loop.last %}class="fila-total {{ d.tipo_huevo|lower }}"{% endif %}>
             {% for peso in fila %}
             <td>{{ peso }}</td>
             {% endfor %}
