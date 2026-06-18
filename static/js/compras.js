@@ -148,12 +148,12 @@ prepararFilaTotal("bodyPardo","pardo");
 
     document.querySelectorAll("#bodyJumbo tr:not(.total-jumbo) .jumbo")
 .forEach(x=>{
-    totalComercial += Number(x.value) || 0;
+    totalJumbo += Number(x.value) || 0;
 });
 
     document.querySelectorAll("#bodyPardo tr:not(.total-pardo) .pardo")
 .forEach(x=>{
-    totalComercial += Number(x.value) || 0;
+    totalPardo += Number(x.value) || 0;
 });
 
     document.getElementById("pesoTotalComercial").value =
