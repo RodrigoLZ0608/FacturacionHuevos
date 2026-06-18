@@ -46,48 +46,35 @@ function generarTabla(id, clase){
     let tabla = document.getElementById(idTabla);
     let filas = tabla.querySelectorAll("tbody tr");
 
-
     filas.forEach(fila => {
 
+        let td = document.createElement("td");
 
-        if(fila.classList.contains("total-" + clase)){
+        // fila total
+        if (fila.classList.contains("total-" + clase)) {
 
+            let input = document.createElement("input");
+            input.type = "text";
+            input.readOnly = true;
+            input.className = "total-columna";
+            input.value = "0.00";
 
-            let td = document.createElement("td");
+            td.appendChild(input);
 
-            td.innerHTML = `
-                <input
-                    type="text"
-                    readonly
-                    class="total-columna"
-                    value="0.00">
-            `;
+        } else {
 
-            fila.appendChild(td);
+            let input = document.createElement("input");
+            input.type = "number";
+            input.step = "0.01";
+            input.className = "peso " + clase;
 
-
-        }else{
-
-
-            let td = document.createElement("td");
-
-            td.innerHTML = `
-                <input
-                    type="number"
-                    step="0.01"
-                    class="peso ${clase}">
-            `;
-
-            fila.appendChild(td);
-
+            td.appendChild(input);
         }
 
-
+        fila.appendChild(td);
     });
 
-
     columnasActuales[clase]++;
-
 }
 
 function actualizarTotalesColumnas(tipo){
