@@ -41,42 +41,42 @@ function generarTabla(id, clase){
 }
 
 
-function agregarColumna(idTabla, clase){
+function generarTabla(id, clase){
 
-    let tabla = document.getElementById(idTabla);
-    let filas = tabla.querySelectorAll("tbody tr");
+    let body = document.getElementById(id);
+    body.innerHTML = "";
 
-    filas.forEach(fila => {
+    for(let i=0;i<21;i++){
+
+        let tr = document.createElement("tr");
 
         let td = document.createElement("td");
 
-        if (fila.classList.contains("total-" + clase)) {
+        let input = document.createElement("input");
 
-            let input = document.createElement("input");
-            input.type = "text";
-            input.readOnly = true;
+        input.type = "number";
+        input.step = "0.01";
 
-            input.classList.add("total-columna");
-            input.value = "0.00";
+        input.classList.add("peso", clase);
 
-            td.appendChild(input);
+        td.appendChild(input);
+        tr.appendChild(td);
 
-        } else {
+        body.appendChild(tr);
+    }
 
-            let input = document.createElement("input");
-            input.type = "number";
-            input.step = "0.01";
+    // fila total
+    let ultimaFila = body.lastElementChild;
 
-            input.classList.add("peso");
-            input.classList.add(clase);
+    ultimaFila.classList.add("total-" + clase);
 
-            td.appendChild(input);
-        }
+    let input = ultimaFila.querySelector("input");
 
-        fila.appendChild(td);
-    });
+    input.type = "text";
+    input.readOnly = true;
 
-    columnasActuales[clase]++;
+    input.classList.add("total-columna");
+    input.value = "0.00";
 }
 
 function actualizarTotalesColumnas(tipo){
