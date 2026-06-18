@@ -390,3 +390,33 @@
     border:none;
 }
 
+/* TOTAL FILA 21 SIN EFECTO CAPSULA */
+
+.total-comercial td,
+.total-jumbo td,
+.total-pardo td{
+    background:transparent;
+}
+
+
+.total-comercial input,
+.total-jumbo input,
+.total-pardo input{
+
+    width:38px !important;
+    height:20px !important;
+
+    padding:1px !important;
+
+    border:none !important;
+    border-radius:0 !important;
+
+    font-size:10px !important;
+
+    text-align:center;
+
+    color:white;
+
+    box-shadow:none !important;
+
+}
