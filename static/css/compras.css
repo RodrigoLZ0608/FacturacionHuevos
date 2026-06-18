@@ -377,3 +377,8 @@
 .total-pardo td{
     background:#e67e22;
 }
+
+.total-columna{
+    font-weight:bold;
+    text-align:center;
+}

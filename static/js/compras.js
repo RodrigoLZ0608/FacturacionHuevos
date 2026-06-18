@@ -6,14 +6,13 @@
         pardo:1
     };
 
-    function generarTabla(id, clase){
+function generarTabla(id, clase){
 
     let body = document.getElementById(id);
 
     body.innerHTML = "";
 
-    // 20 filas de datos
-    for(let i = 0; i < 20; i++){
+    for(let i=0;i<20;i++){
 
         body.innerHTML += `
         <tr>
@@ -25,15 +24,16 @@
             </td>
         </tr>
         `;
-
     }
 
 
     // fila 21 total
-    body.innerHTML += `
+    let tr = document.createElement("tr");
 
-    <tr class="total-${clase}">
+    tr.className = "total-" + clase;
 
+
+    tr.innerHTML = `
         <td>
             <input
             type="text"
@@ -41,10 +41,10 @@
             class="total-columna"
             value="0.00">
         </td>
-
-    </tr>
-
     `;
+
+
+    body.appendChild(tr);
 
 }
 
