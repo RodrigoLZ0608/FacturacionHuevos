@@ -125,7 +125,7 @@
 
         /* INPUTS PESO */
         .peso{
-        width:42px;
+        width:43px;
         height:20px;
         padding:0px;
         font-size:14px;
@@ -405,7 +405,7 @@
 .total-jumbo input,
 .total-pardo input{
 
-    width:42px !important;
+    width:43px !important;
     height:20px !important;
 
     padding:0px !important;
