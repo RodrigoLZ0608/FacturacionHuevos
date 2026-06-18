@@ -366,15 +366,18 @@
 
 /* FILA TOTAL */
 
-.total-comercial td{
-    background:#ff6ac6;
+.total-comercial input {
+    background: #ff6ac6;
+    font-weight: bold;
 }
 
-.total-jumbo td{
-    background:#27ae60;
+.total-jumbo input {
+    background: #27ae60;
+    font-weight: bold;
 }
 
-.total-pardo td{
-    background:#e67e22;
+.total-pardo input {
+    background: #e67e22;
+    font-weight: bold;
 }
 

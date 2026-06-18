@@ -27,6 +27,29 @@
         }
     }
 
+    function agregarFilaTotal(idTabla, clase){
+
+    let tabla = document.getElementById(idTabla);
+    let tbody = tabla.querySelector("tbody");
+
+    let tr = document.createElement("tr");
+    tr.classList.add("total-" + clase);
+
+    // una celda (puedes extender si tienes más columnas)
+    let td = document.createElement("td");
+
+    td.innerHTML = `
+        <input
+            type="text"
+            readonly
+            class="total-columna total-${clase}"
+            value="0.00">
+    `;
+
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+}
+
 
     function agregarColumna(idTabla, clase){
 
@@ -67,6 +90,8 @@
 
     columnasActuales[clase]++;
 }
+
+
 
 function actualizarTotalesColumnas(tipo){
 
