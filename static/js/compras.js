@@ -62,19 +62,6 @@
 
             fila.appendChild(td);
 
-        }else{
-
-            let td = document.createElement("td");
-
-            let input = document.createElement("input");
-
-            input.type = "number";
-            input.step = "0.01";
-            input.className = "peso " + clase;
-
-            td.appendChild(input);
-
-            fila.appendChild(td);
         }
     });
 
