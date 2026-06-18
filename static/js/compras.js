@@ -6,78 +6,63 @@
         pardo:1
     };
 
-function generarTabla(id, clase){
+    function generarTabla(id, clase){
 
-    let body = document.getElementById(id);
-    body.innerHTML = "";
+        let body = document.getElementById(id);
 
-    for(let i=0;i<21;i++){
+        body.innerHTML = "";
 
-        let tr = document.createElement("tr");
+        for(let i=0;i<20;i++){
 
-        let td = document.createElement("td");
-
-        let input = document.createElement("input");
-
-        input.type = "number";
-        input.step = "0.01";
-
-        input.classList.add("peso", clase);
-
-        td.appendChild(input);
-        tr.appendChild(td);
-
-        body.appendChild(tr);
+            body.innerHTML += `
+            <tr>
+                <td>
+                    <input
+                        type="number"
+                        class="peso ${clase}"
+                        step="0.01">
+                </td>
+            </tr>
+            `;
+        }
     }
 
-    // fila total
-    let ultimaFila = body.lastElementChild;
 
-    ultimaFila.classList.add("total-" + clase);
-
-    let input = ultimaFila.querySelector("input");
-
-    input.type = "text";
-    input.readOnly = true;
-
-    input.classList.add("total-columna");
-    input.value = "0.00";
-}
-
-
-function agregarColumna(idTabla, clase){
+    function agregarColumna(idTabla, clase){
 
     let tabla = document.getElementById(idTabla);
     let filas = tabla.querySelectorAll("tbody tr");
 
     filas.forEach(fila => {
 
-        let td = document.createElement("td");
+        if(fila.classList.contains("total-" + clase)){
 
-        if (fila.classList.contains("total-" + clase)) {
+            let td = document.createElement("td");
+
+            td.innerHTML = `
+                <input
+                    type="text"
+                    readonly
+                    class="total-columna"
+                    value="0.00">
+            `;
+
+            fila.appendChild(td);
+
+        }else{
+
+            let td = document.createElement("td");
 
             let input = document.createElement("input");
-            input.type = "text";
-            input.readOnly = true;
 
-            input.classList.add("total-columna");
-            input.value = "0.00";
-
-            td.appendChild(input);
-
-        } else {
-
-            let input = document.createElement("input");
             input.type = "number";
             input.step = "0.01";
-
-            input.classList.add("peso");
-            input.classList.add(clase);
+            input.className = "peso " + clase;
 
             td.appendChild(input);
-        }
 
-        fila.appendChild(td);
+            fila.appendChild(td);
+        }
     });
 
     columnasActuales[clase]++;
