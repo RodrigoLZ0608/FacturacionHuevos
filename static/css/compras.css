@@ -381,14 +381,7 @@
 
 }
 
-.total-columna{
-    width:38px;
-    height:20px;
-    padding:1px;
-    font-size:10px;
-    text-align:center;
-    border:none;
-}
+
 
 /* TOTAL FILA 21 SIN EFECTO CAPSULA */
 
@@ -409,10 +402,10 @@
 .total-jumbo input,
 .total-pardo input{
 
-    width:100% !important;
-    height:100% !important;
+    width:38px !important;
+    height:20px !important;
 
-    padding:0 !important;
+    padding:1px !important;
 
     border:none !important;
     border-radius:0 !important;
@@ -423,7 +416,6 @@
 
     color:white;
 
-    background:transparent !important;
-
     box-shadow:none !important;
+
 }
