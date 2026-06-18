@@ -1,40 +1,42 @@
-    console.log("COMPRAS JS CARGADO");
+console.log("COMPRAS JS CARGADO");
 
-    let columnasActuales = {
-        comercial:1,
-        jumbo:1,
-        pardo:1
-    };
+let columnasActuales = {
+    comercial:1,
+    jumbo:1,
+    pardo:1
+};
 
-    function generarTabla(id, clase){
 
-        let body = document.getElementById(id);
+function generarTabla(id, clase){
 
-        body.innerHTML = "";
+    let body = document.getElementById(id);
 
-        for(let i=0;i<21;i++){
+    body.innerHTML = "";
 
-            body.innerHTML += `
-            <tr>
-                <td>
-                    <input
-                        type="number"
-                        class="peso ${clase}"
-                        step="0.01">
-                </td>
-            </tr>
-            `;
-        }
-        
+    for(let i=0;i<21;i++){
+
+        body.innerHTML += `
+        <tr>
+            <td>
+                <input
+                    type="number"
+                    class="peso ${clase}"
+                    step="0.01">
+            </td>
+        </tr>
+        `;
     }
+}
 
-    function convertirFilaTotal(id, clase){
 
-    let tabla = document.getElementById(id);
+// NUEVO: convierte la fila 21 en total
+function prepararFilaTotal(id, clase){
 
-    let filas = tabla.querySelectorAll("tr");
+    let body = document.getElementById(id);
 
-    let filaTotal = filas[20]; // fila 21
+    let filas = body.querySelectorAll("tr");
+
+    let filaTotal = filas[20];
 
     filaTotal.classList.add("total-" + clase);
 
@@ -42,10 +44,8 @@
 
     input.type = "text";
     input.readOnly = true;
-    input.classList.remove("peso");
-    input.classList.add("total-columna");
-
     input.value = "0.00";
+
 }
 
 
@@ -105,14 +105,15 @@
         columnasActuales[clase] = Math.max(1, columnasActuales[clase] - 1);
     }
 
-    generarTabla("bodyComercial","comercial");
+generarTabla("bodyComercial","comercial");
 generarTabla("bodyJumbo","jumbo");
 generarTabla("bodyPardo","pardo");
 
 
-convertirFilaTotal("bodyComercial","comercial");
-convertirFilaTotal("bodyJumbo","jumbo");
-convertirFilaTotal("bodyPardo","pardo");
+// PREPARAR FILA TOTAL
+prepararFilaTotal("bodyComercial","comercial");
+prepararFilaTotal("bodyJumbo","jumbo");
+prepararFilaTotal("bodyPardo","pardo");
     function calcular(){
 
     let totalComercial=0;
@@ -172,8 +173,8 @@ convertirFilaTotal("bodyPardo","pardo");
     (importeComercial + importeJumbo + importePardo).toFixed(2);
 
     actualizarTotalesColumnas("comercial");
-    actualizarTotalesColumnas("jumbo");
-    actualizarTotalesColumnas("pardo");
+actualizarTotalesColumnas("jumbo");
+actualizarTotalesColumnas("pardo");
 
     }
 
@@ -233,33 +234,27 @@ convertirFilaTotal("bodyPardo","pardo");
 
     function actualizarTotalesColumnas(tipo){
 
-    let tabla = document.querySelector("#body" + 
-        tipo.charAt(0).toUpperCase() + tipo.slice(1)
+    let tabla = document.getElementById(
+        "body" + tipo.charAt(0).toUpperCase() + tipo.slice(1)
     );
+
 
     let filas = tabla.querySelectorAll("tr");
 
     let total = 0;
 
-    filas.forEach((fila,index)=>{
 
-        if(index < 20){
+    for(let i = 0; i < 20; i++){
 
-            let input = fila.querySelector("input." + tipo);
+        let input = filas[i].querySelector("input");
 
-            if(input){
-                total += Number(input.value) || 0;
-            }
+        total += Number(input.value) || 0;
 
-        }
-
-    });
+    }
 
 
-    let filaTotal = filas[20];
-
-    filaTotal.querySelector("input").value =
-        total.toFixed(2);
+    filas[20].querySelector("input").value =
+    total.toFixed(2);
 
 }
 
