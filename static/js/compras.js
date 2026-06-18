@@ -8,64 +8,98 @@
 
     function generarTabla(id, clase){
 
-        let body = document.getElementById(id);
+    let body = document.getElementById(id);
 
-        body.innerHTML = "";
+    body.innerHTML = "";
 
-        for(let i=0;i<21;i++){
+    // 20 filas de datos
+    for(let i = 0; i < 20; i++){
 
-            body.innerHTML += `
-            <tr>
-                <td>
-                    <input
-                        type="number"
-                        class="peso ${clase}"
-                        step="0.01">
-                </td>
-            </tr>
-            `;
-        }
+        body.innerHTML += `
+        <tr>
+            <td>
+                <input
+                    type="number"
+                    class="peso ${clase}"
+                    step="0.01">
+            </td>
+        </tr>
+        `;
+
     }
+
+
+    // fila 21 total
+    body.innerHTML += `
+
+    <tr class="total-${clase}">
+
+        <td>
+            <input
+            type="text"
+            readonly
+            class="total-columna"
+            value="0.00">
+        </td>
+
+    </tr>
+
+    `;
+
+}
 
 
     function agregarColumna(idTabla, clase){
 
     let tabla = document.getElementById(idTabla);
+
     let filas = tabla.querySelectorAll("tbody tr");
 
-    filas.forEach(fila => {
 
+    filas.forEach(fila=>{
+
+
+        // si es la fila total
         if(fila.classList.contains("total-" + clase)){
 
-            let td = document.createElement("td");
 
-            td.innerHTML = `
+            fila.innerHTML += `
+
+            <td>
                 <input
-                    type="text"
-                    readonly
-                    class="total-columna"
-                    value="0.00">
+                type="text"
+                readonly
+                class="total-columna"
+                value="0.00">
+            </td>
+
             `;
 
-            fila.appendChild(td);
 
         }else{
 
-            let td = document.createElement("td");
 
-            let input = document.createElement("input");
+            fila.innerHTML += `
 
-            input.type = "number";
-            input.step = "0.01";
-            input.className = "peso " + clase;
+            <td>
 
-            td.appendChild(input);
+                <input
+                type="number"
+                step="0.01"
+                class="peso ${clase}">
 
-            fila.appendChild(td);
+            </td>
+
+            `;
+
         }
+
+
     });
 
+
     columnasActuales[clase]++;
+
 }
 
 function actualizarTotalesColumnas(tipo){
