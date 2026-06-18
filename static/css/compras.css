@@ -105,7 +105,7 @@
         border:1px solid #e0e0e0;
         padding:0px;
         text-align:center;
-        font-size:20px;
+        font-size: 16px;
     }
 
         thead{
@@ -138,6 +138,7 @@
         .contenido-tabla{
             display:flex;
             gap:12px;
+            font-size: 30px;
             align-items:stretch; /* 🔥 clave: iguala alturas */
         }
         .contenido-tabla table{
