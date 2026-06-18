@@ -392,10 +392,16 @@
 
 /* TOTAL FILA 21 SIN EFECTO CAPSULA */
 
-.total-comercial td,
-.total-jumbo td,
+.total-comercial td{
+    background:#ff6ac6 !important;
+}
+
+.total-jumbo td{
+    background:#27ae60 !important;
+}
+
 .total-pardo td{
-    background:transparent;
+    background:#e67e22 !important;
 }
 
 
@@ -403,10 +409,10 @@
 .total-jumbo input,
 .total-pardo input{
 
-    width:38px !important;
-    height:20px !important;
+    width:100% !important;
+    height:100% !important;
 
-    padding:1px !important;
+    padding:0 !important;
 
     border:none !important;
     border-radius:0 !important;
@@ -417,6 +423,7 @@
 
     color:white;
 
-    box-shadow:none !important;
+    background:transparent !important;
 
+    box-shadow:none !important;
 }
