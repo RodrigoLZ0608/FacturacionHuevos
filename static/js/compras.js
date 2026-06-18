@@ -34,29 +34,30 @@ function prepararFilaTotal(id, clase){
 
     let body = document.getElementById(id);
 
-    let filas = body.querySelectorAll("tr");
-
-    let filaTotal = filas[20];
+    let filaTotal = body.querySelectorAll("tr")[20];
 
     filaTotal.classList.add("total-" + clase);
 
+
     let input = filaTotal.querySelector("input");
 
-    input.type = "text";
-    input.readOnly = true;
-    input.value = "0.00";
+    input.type="text";
+    input.readOnly=true;
+    input.value="0.00";
 
 }
 
 
-    function agregarColumna(idTabla, clase){
+function agregarColumna(idTabla, clase){
 
     let tabla = document.getElementById(idTabla);
     let filas = tabla.querySelectorAll("tbody tr");
 
-    filas.forEach(fila => {
+    filas.forEach((fila, index)=>{
 
-        if(fila.classList.contains("total-" + clase)){
+
+        // fila 21 = total
+        if(index === 20){
 
             let td = document.createElement("td");
 
@@ -64,13 +65,16 @@ function prepararFilaTotal(id, clase){
                 <input
                     type="text"
                     readonly
-                    class="total-columna"
                     value="0.00">
             `;
 
+            td.parentElement;
+
             fila.appendChild(td);
 
+
         }else{
+
 
             let td = document.createElement("td");
 
@@ -83,10 +87,17 @@ function prepararFilaTotal(id, clase){
             td.appendChild(input);
 
             fila.appendChild(td);
+
         }
+
+
     });
 
+
     columnasActuales[clase]++;
+
+    actualizarTotalesColumnas(clase);
+
 }
 
 
