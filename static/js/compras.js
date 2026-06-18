@@ -51,50 +51,57 @@ function prepararFilaTotal(id, clase){
 function agregarColumna(idTabla, clase){
 
     let tabla = document.getElementById(idTabla);
+
     let filas = tabla.querySelectorAll("tbody tr");
 
-    filas.forEach((fila, index)=>{
+
+    filas.forEach((fila,index)=>{
 
 
-        // fila 21 = total
+        let td = document.createElement("td");
+
+
+        // FILA 21 TOTAL
         if(index === 20){
 
-            let td = document.createElement("td");
 
-            td.innerHTML = `
-                <input
-                    type="text"
-                    readonly
-                    value="0.00">
-            `;
+            let input = document.createElement("input");
 
-            td.parentElement;
-
-            fila.appendChild(td);
+            input.type = "text";
+            input.readOnly = true;
+            input.value = "0.00";
 
 
-        }else{
+            td.appendChild(input);
 
 
-            let td = document.createElement("td");
+        }
+
+        // FILAS DE PESOS
+        else{
+
 
             let input = document.createElement("input");
 
             input.type = "number";
             input.step = "0.01";
+
             input.className = "peso " + clase;
+
 
             td.appendChild(input);
 
-            fila.appendChild(td);
-
         }
+
+
+        fila.appendChild(td);
 
 
     });
 
 
     columnasActuales[clase]++;
+
 
     actualizarTotalesColumnas(clase);
 
@@ -243,7 +250,8 @@ actualizarTotalesColumnas("pardo");
         alert("La tabla está llena");
     }
 
-    function actualizarTotalesColumnas(tipo){
+function actualizarTotalesColumnas(tipo){
+
 
     let tabla = document.getElementById(
         "body" + tipo.charAt(0).toUpperCase() + tipo.slice(1)
@@ -252,20 +260,34 @@ actualizarTotalesColumnas("pardo");
 
     let filas = tabla.querySelectorAll("tr");
 
-    let total = 0;
+
+    let columnas = filas[0].querySelectorAll("input").length;
 
 
-    for(let i = 0; i < 20; i++){
+    for(let col=0; col<columnas; col++){
 
-        let input = filas[i].querySelector("input");
 
-        total += Number(input.value) || 0;
+        let total = 0;
+
+
+        for(let fila=0; fila<20; fila++){
+
+
+            let input = filas[fila].querySelectorAll("input")[col];
+
+
+            total += Number(input.value) || 0;
+
+
+        }
+
+
+        filas[20]
+        .querySelectorAll("input")[col]
+        .value = total.toFixed(2);
+
 
     }
-
-
-    filas[20].querySelector("input").value =
-    total.toFixed(2);
 
 }
 
