@@ -29,21 +29,22 @@ function generarTabla(id, clase){
 }
 
 
-// NUEVO: convierte la fila 21 en total
 function prepararFilaTotal(id, clase){
 
     let body = document.getElementById(id);
 
     let filaTotal = body.querySelectorAll("tr")[20];
 
-    filaTotal.classList.add("total-" + clase);
+
+    filaTotal.className = "total-" + clase;
 
 
     let input = filaTotal.querySelector("input");
 
-    input.type="text";
-    input.readOnly=true;
-    input.value="0.00";
+
+    input.type = "text";
+    input.readOnly = true;
+    input.value = "0.00";
 
 }
 
@@ -61,7 +62,6 @@ function agregarColumna(idTabla, clase){
         let td = document.createElement("td");
 
 
-        // FILA 21 TOTAL
         if(index === 20){
 
 
@@ -69,16 +69,14 @@ function agregarColumna(idTabla, clase){
 
             input.type = "text";
             input.readOnly = true;
-            input.value = "0.00";
+
+            input.className = "total-columna";
 
 
             td.appendChild(input);
 
 
-        }
-
-        // FILAS DE PESOS
-        else{
+        }else{
 
 
             let input = document.createElement("input");
@@ -98,6 +96,10 @@ function agregarColumna(idTabla, clase){
 
 
     });
+
+
+    // volver a aplicar estilo a la fila total
+    filas[20].className = "total-" + clase;
 
 
     columnasActuales[clase]++;

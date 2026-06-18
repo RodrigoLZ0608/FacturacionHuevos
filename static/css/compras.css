@@ -381,3 +381,12 @@
 
 }
 
+.total-columna{
+    width:38px;
+    height:20px;
+    padding:1px;
+    font-size:10px;
+    text-align:center;
+    border:none;
+}
+
