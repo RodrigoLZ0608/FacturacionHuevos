@@ -27,20 +27,16 @@ function generarTabla(id, clase){
     }
 
 
-    // convertir la fila 21 en total
     let ultimaFila = body.lastElementChild;
 
     ultimaFila.classList.add("total-" + clase);
 
-    ultimaFila.innerHTML = `
-        <td>
-            <input
-                type="text"
-                readonly
-                class="total-columna"
-                value="0.00">
-        </td>
-    `;
+    let input = ultimaFila.querySelector("input");
+
+    input.type = "text";
+    input.readOnly = true;
+    input.classList.add("total-columna");
+    input.value = "0.00";
 
 }
 
