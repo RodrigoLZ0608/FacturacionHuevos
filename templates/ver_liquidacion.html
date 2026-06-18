@@ -37,14 +37,17 @@ h1{
 }
 
 .detalle{
-    margin:5px auto;
-    background:white;
-    padding:4px;
-    border-radius:12px;
-    box-shadow:0 3px 10px rgba(0,0,0,0.08);
-    flex: 0 0 auto;
-    min-width: 260px;
-    width: max-content;
+    flex: 0 0 300px;   /* tamaño fijo de cada tarjeta */
+    max-width: 320px;
+
+    margin: 5px 0;
+    background: white;
+    padding: 4px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+
+    display: flex;
+    flex-direction: column;
 }
 
 .detalle h2{
@@ -107,7 +110,7 @@ button:hover{
     background:#ff6ac6 !important;
 }
 
-.extra td{
+.pardo td{
     background:#27ae60 !important;
 }
 
@@ -116,13 +119,11 @@ button:hover{
 }
 
 .contenedor-detalles{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content: flex-start;
-    gap:12px;
-    align-items:flex-start; 
-    text-align:center;
-    align-content: flex-start;  
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* clave */
+    gap: 12px;
+    align-items: flex-start;
 }
 
 </style>
