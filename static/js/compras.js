@@ -12,7 +12,7 @@
 
         body.innerHTML = "";
 
-        for(let i=0;i<20;i++){
+        for(let i=0;i<21;i++){
 
             body.innerHTML += `
             <tr>
@@ -27,6 +27,26 @@
         }
         
     }
+
+    function convertirFilaTotal(id, clase){
+
+    let tabla = document.getElementById(id);
+
+    let filas = tabla.querySelectorAll("tr");
+
+    let filaTotal = filas[20]; // fila 21
+
+    filaTotal.classList.add("total-" + clase);
+
+    let input = filaTotal.querySelector("input");
+
+    input.type = "text";
+    input.readOnly = true;
+    input.classList.remove("peso");
+    input.classList.add("total-columna");
+
+    input.value = "0.00";
+}
 
 
     function agregarColumna(idTabla, clase){
@@ -69,33 +89,7 @@
     columnasActuales[clase]++;
 }
 
-function actualizarTotalesColumnas(tipo){
 
-    let matriz = obtenerMatriz(tipo);
-
-    let tabla =
-    document.querySelector(
-        "#tabla" +
-        tipo.charAt(0).toUpperCase() +
-        tipo.slice(1)
-    );
-
-    let filaTotal =
-    tabla.querySelector(".total-" + tipo);
-
-    matriz.forEach((columna, indice)=>{
-
-        let suma = 0;
-
-        columna.forEach(input=>{
-            suma += Number(input.value) || 0;
-        });
-
-        filaTotal.children[indice]
-            .querySelector("input")
-            .value = suma.toFixed(2);
-    });
-}
 
     function eliminarColumna(idTabla, clase){
 
@@ -112,8 +106,13 @@ function actualizarTotalesColumnas(tipo){
     }
 
     generarTabla("bodyComercial","comercial");
-    generarTabla("bodyJumbo","jumbo");
-    generarTabla("bodyPardo","pardo");
+generarTabla("bodyJumbo","jumbo");
+generarTabla("bodyPardo","pardo");
+
+
+convertirFilaTotal("bodyComercial","comercial");
+convertirFilaTotal("bodyJumbo","jumbo");
+convertirFilaTotal("bodyPardo","pardo");
     function calcular(){
 
     let totalComercial=0;
@@ -231,6 +230,38 @@ function actualizarTotalesColumnas(tipo){
 
         alert("La tabla está llena");
     }
+
+    function actualizarTotalesColumnas(tipo){
+
+    let tabla = document.querySelector("#body" + 
+        tipo.charAt(0).toUpperCase() + tipo.slice(1)
+    );
+
+    let filas = tabla.querySelectorAll("tr");
+
+    let total = 0;
+
+    filas.forEach((fila,index)=>{
+
+        if(index < 20){
+
+            let input = fila.querySelector("input." + tipo);
+
+            if(input){
+                total += Number(input.value) || 0;
+            }
+
+        }
+
+    });
+
+
+    let filaTotal = filas[20];
+
+    filaTotal.querySelector("input").value =
+        total.toFixed(2);
+
+}
 
     function obtenerMatriz(tipo){
 
