@@ -99,6 +99,7 @@
         table{
             width:100%;
             border-collapse:collapse;
+            font-size: 16px;
         }
 
         th, td{
@@ -126,7 +127,7 @@
         width:38px;
         height:20px;
         padding:1px;
-        font-size:10px;
+        font-size:16px;
         text-align:center;
         border: none;
         outline: none;
@@ -138,7 +139,6 @@
         .contenido-tabla{
             display:flex;
             gap:12px;
-            font-size: 30px;
             align-items:stretch; /* 🔥 clave: iguala alturas */
         }
         .contenido-tabla table{
