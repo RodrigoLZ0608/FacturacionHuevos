@@ -42,8 +42,9 @@ h1{
     padding:4px;
     border-radius:12px;
     box-shadow:0 3px 10px rgba(0,0,0,0.08);
-    display: inline-block;
-
+    flex: 0 0 auto;
+    min-width: 260px;
+    width: max-content;
 }
 
 .detalle h2{
@@ -53,8 +54,7 @@ h1{
 
 /* TABLA PESOS */
 table{
-    width: auto;
-    min-width: 120px;
+    width:25%;
     border-collapse:collapse;
     margin:auto;
 }
@@ -116,7 +116,7 @@ button:hover{
 }
 
 .contenedor-detalles{
-    display:grid;
+    display:flex;
     flex-wrap:wrap;
     justify-content: flex-start;
     gap:12px;
