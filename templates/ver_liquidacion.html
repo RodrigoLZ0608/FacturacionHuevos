@@ -36,12 +36,13 @@ h1{
 }
 
 .detalle{
-    width:max-content;
     margin:5px auto;
     background:white;
     padding:4px;
     border-radius:12px;
     box-shadow:0 3px 10px rgba(0,0,0,0.08);
+    width:fit-content;
+    flex:0 1 auto;
 }
 
 .detalle h2{
@@ -112,6 +113,13 @@ button:hover{
     background:#e67e22 !important;
 }
 
+.contenedor-detalles{
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+    justify-content:center;
+}
+
 </style>
 
 </head>
@@ -129,6 +137,10 @@ button:hover{
 </div>
 
 {% for d in detalles %}
+
+<div class="contenedor-detalles">
+
+    {% for d in detalles %}
 
 <div class="detalle">
 
@@ -153,6 +165,10 @@ button:hover{
         <div><b>Importe:</b> S/ {{ d.importe }}</div>
 
     </div>
+
+</div>
+
+{% endfor %}
 
 </div>
 
