@@ -142,9 +142,10 @@ button:hover{
 <h1>🥚 LIQUIDACIÓN DE VENTA</h1>
 
 <div class="cabecera">
-    <p><span class="label">Fecha:</span> {{ cabecera[0] }}</p>
-    <p><span class="label">Cliente:</span> {{ cabecera[1] }}</p>
-    <p><span class="label">Importe Total:</span> S/ {{ cabecera[2] }}</p>
+     <div class="info"><b>Fecha:</b> {{ cabecera[0] }}</div>
+    <div class="info"><b>Proveedor:</b> {{ cabecera[1] }}</div>
+    <div class="info"><b>Importe Total:</b> S/ {{ cabecera[2] }}</div>
+
 </div>
 
 <div class="contenedor-detalles">
@@ -167,10 +168,10 @@ button:hover{
 
 <div class="datos">
 
-<p><b>Precio Kg:</b> {{ d.precio_kg }}</p>
-<p><b>Peso Total:</b> {{ d.peso_total }}</p>
-<p><b>Cantidad de Paquetes:</b> {{ d.cantidad_paquetes }}</p>
-<p><b>Importe:</b> S/ {{ d.importe }}</p>
+        <div><b>Precio Kg:</b> {{ d.precio_kg }}</div>
+        <div><b>Peso Total:</b> {{ d.peso_total }}</div>
+        <div><b>Paquetes:</b> {{ d.cantidad_paquetes }}</div>
+        <div><b>Importe:</b> S/ {{ d.importe }}</div>
 
 </div>
 </div>
