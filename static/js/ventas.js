@@ -12,7 +12,7 @@ function generarTabla(id, clase){
 
     body.innerHTML = "";
 
-    for(let i=0;i<20;i++){
+    for(let i=0;i<21;i++){
 
         body.innerHTML += `
         <tr>
@@ -27,44 +27,83 @@ function generarTabla(id, clase){
     }
 }
 
+function prepararFilaTotal(id, clase){
+
+    let body = document.getElementById(id);
+
+    let filaTotal = body.querySelectorAll("tr")[20];
+
+
+    filaTotal.className = "total-" + clase;
+
+
+    let input = filaTotal.querySelector("input");
+
+
+    input.type = "text";
+    input.readOnly = true;
+    input.value = "0.00";
+
+}
+
 function agregarColumna(idTabla, clase){
 
     let tabla = document.getElementById(idTabla);
+
     let filas = tabla.querySelectorAll("tbody tr");
 
-    filas.forEach(fila => {
 
-        if(fila.classList.contains("total-" + clase)){
+    filas.forEach((fila,index)=>{
 
-            let td = document.createElement("td");
 
-            td.innerHTML = `
-                <input
-                    type="text"
-                    readonly
-                    class="total-columna"
-                    value="0.00">
-            `;
+        let td = document.createElement("td");
 
-            fila.appendChild(td);
+
+        if(index === 20){
+
+
+            let input = document.createElement("input");
+
+            input.type = "text";
+            input.readOnly = true;
+
+            input.className = "total-columna";
+
+
+            td.appendChild(input);
+
 
         }else{
 
-            let td = document.createElement("td");
 
             let input = document.createElement("input");
 
             input.type = "number";
             input.step = "0.01";
+
             input.className = "peso " + clase;
+
 
             td.appendChild(input);
 
-            fila.appendChild(td);
         }
+
+
+        fila.appendChild(td);
+
+
     });
 
+
+    // volver a aplicar estilo a la fila total
+    filas[20].className = "total-" + clase;
+
+
     columnasActuales[clase]++;
+
+
+    actualizarTotalesColumnas(clase);
+
 }
 
 
@@ -87,23 +126,31 @@ generarTabla("bodyComercial","comercial");
 generarTabla("bodyJumbo","jumbo");
 generarTabla("bodyPardo","pardo");
 
+// PREPARAR FILA TOTAL
+prepararFilaTotal("bodyComercial","comercial");
+prepararFilaTotal("bodyJumbo","jumbo");
+prepararFilaTotal("bodyPardo","pardo");
+
 function calcular(){
 
     let totalComercial=0;
     let totalJumbo=0;
     let totalPardo=0;
 
-    document.querySelectorAll(".comercial").forEach(x=>{
-        totalComercial += Number(x.value)||0;
-    });
+    document.querySelectorAll("#bodyComercial tr:not(.total-comercial) .comercial")
+.forEach(x=>{
+    totalComercial += Number(x.value) || 0;
+});
 
-    document.querySelectorAll(".jumbo").forEach(x=>{
-        totalJumbo += Number(x.value)||0;
-    });
+    document.querySelectorAll("#bodyJumbo tr:not(.total-jumbo) .jumbo")
+.forEach(x=>{
+    totalJumbo += Number(x.value) || 0;
+});
 
-    document.querySelectorAll(".pardo").forEach(x=>{
-        totalPardo += Number(x.value)||0;
-    });
+    document.querySelectorAll("#bodyPardo tr:not(.total-pardo) .pardo")
+.forEach(x=>{
+    totalPardo += Number(x.value) || 0;
+});
 
     document.getElementById("pesoTotalComercial").value = totalComercial.toFixed(2);
     document.getElementById("pesoTotalJumbo").value = totalJumbo.toFixed(2);
@@ -123,6 +170,11 @@ function calcular(){
 
     document.getElementById("importeGeneral").value =
         (importeComercial + importeJumbo + importePardo).toFixed(2);
+
+            actualizarTotalesColumnas("comercial");
+actualizarTotalesColumnas("jumbo");
+actualizarTotalesColumnas("pardo");
+
 }
 
 document.addEventListener("input", calcular);
@@ -173,6 +225,47 @@ function agregarPesoAutomatico(valor, tipo){
     }
 
     alert("La tabla está llena");
+}
+
+function actualizarTotalesColumnas(tipo){
+
+
+    let tabla = document.getElementById(
+        "body" + tipo.charAt(0).toUpperCase() + tipo.slice(1)
+    );
+
+
+    let filas = tabla.querySelectorAll("tr");
+
+
+    let columnas = filas[0].querySelectorAll("input").length;
+
+
+    for(let col=0; col<columnas; col++){
+
+
+        let total = 0;
+
+
+        for(let fila=0; fila<20; fila++){
+
+
+            let input = filas[fila].querySelectorAll("input")[col];
+
+
+            total += Number(input.value) || 0;
+
+
+        }
+
+
+        filas[20]
+        .querySelectorAll("input")[col]
+        .value = total.toFixed(2);
+
+
+    }
+
 }
 
 function obtenerMatriz(tipo){
@@ -356,8 +449,16 @@ function guardarVenta(){
         headers:{
             "Content-Type":"application/json"
         },
-        body:JSON.stringify(datos)
-    })
+        body: JSON.stringify({
+                ...datos,
+                columnas: {
+                    comercial: columnasActuales.comercial,
+                    jumbo: columnasActuales.jumbo,
+                    pardo: columnasActuales.pardo
+                }
+            })
+
+        })
     .then(res=>res.json())
     .then(data=>{
         alert(data.mensaje);
@@ -371,21 +472,25 @@ function agregarTipoVenta(nombre, clase, idPrecio, idPesoTotal, idImporte, datos
     document.querySelectorAll("." + clase)
 .forEach((x, index) => {
 
-    if (x.value !== "") {
+    let valor = Number(x.value);
 
-        let filas = 20;
-        let posicion = index;
+    if(!isNaN(valor) && valor > 0){
 
         pesos.push({
-            valor: Number(x.value),
-            posicion: posicion
+
+            valor: valor,
+
+            posicion:index
+
         });
 
     }
+
 });
 
-    if(pesos.length==0) return;
-
+    if(pesos.length === 0){
+    return;
+}
     datos.detalles.push({
 
         tipo_huevo:nombre,

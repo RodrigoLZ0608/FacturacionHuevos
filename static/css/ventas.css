@@ -77,16 +77,10 @@
         #seccionComercial,
         #seccionJumbo,
         #seccionPardo{
-
-
             background:white;
-
             border-radius:15px;
-
             padding:15px;
-
             box-shadow:0 5px 15px rgba(0,0,0,.08);
-
             box-sizing:border-box;
         }
 
@@ -99,13 +93,16 @@
         table{
             width:100%;
             border-collapse:collapse;
+            font-size: 16px;
         }
 
         th, td{
         border:1px solid #e0e0e0;
         padding:0px;
         text-align:center;
+        font-size: 16px;
     }
+    
 
         thead{
             background:#3498db;
@@ -122,10 +119,10 @@
 
         /* INPUTS PESO */
         .peso{
-        width:38px;
+        width:43px;
         height:20px;
-        padding:1px;
-        font-size:10px;
+        padding:0px;
+        font-size:14px;
         text-align:center;
         border: none;
         outline: none;
@@ -174,7 +171,7 @@
         }
 
         /* BOTÓN GUARDAR */
-        #btnGuardar{
+        #btnGuardarVenta{
             margin-top:10px;
             background:#27ae60;
             color:white;
@@ -364,4 +361,58 @@
     text-align: center;
 }
 
+/* FILA TOTAL */
 
+.total-comercial input {
+    background: #ff6ac6;
+
+}
+
+.total-jumbo input {
+    background: #27ae60;
+
+}
+
+.total-pardo input {
+    background: #e67e22;
+
+}
+
+
+
+/* TOTAL FILA 21 SIN EFECTO CAPSULA */
+
+.total-comercial td{
+    background:#ff6ac6 !important;
+}
+
+.total-jumbo td{
+    background:#27ae60 !important;
+}
+
+.total-pardo td{
+    background:#e67e22 !important;
+}
+
+
+.total-comercial input,
+.total-jumbo input,
+.total-pardo input{
+
+    width:43px !important;
+    height:20px !important;
+
+    padding:0px !important;
+
+    border:none !important;
+    border:none !important;
+
+    font-size:14px !important;
+
+    text-align:center;
+
+    color:white;
+
+    box-shadow:none !important;
+
+}

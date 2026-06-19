@@ -10,111 +10,126 @@
 body{
     font-family:'Segoe UI', sans-serif;
     background:#f4f6f9;
-    margin:0;
-    padding:20px;
+    padding:25px;
+    color:#2c3e50;
 }
 
-.container{
-    max-width:1100px;
-    margin:auto;
-}
+
 
 /* TITULOS */
 h1{
     text-align:center;
+    margin-bottom:20px;
     color:#2c3e50;
-    margin:20px 0;
 }
 
-h2{
-    text-align:center;
-    color:#34495e;
-    margin-top:30px;
+.cabecera{
+    max-width:225px;
+    margin:auto;
+    background:white;
+    margin:auto;
+    border-radius:12px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.08);
+    margin-bottom:20px;
+    padding:4px;
 }
 
 /* INFO CABECERA */
 .info{
-    width:60%;
-    margin:auto;
-    background:white;
-    padding:15px;
-    border-radius:10px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
-    margin-bottom:20px;
-}
-
-.info p{
     margin:8px 0;
-    font-size:14px;
+    font-size:15px;
 }
 
-.label{
-    font-weight:bold;
-    color:#2c3e50;
+.detalle{
+    flex: 0 0 300px;   /* tamaño fijo de cada tarjeta */
+    width: max-content;
+
+    margin: 5px 0;
+    background: white;
+    padding: 4px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.detalle h2{
+    color:#3498db;
+    margin:0 0 10px 0;
 }
 
 /* TABLAS */
 table{
-    width:60%;
-    margin:auto;
+    width:auto;
     border-collapse:collapse;
-    background:white;
-    border-radius:10px;
-    overflow:hidden;
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
-    margin-bottom:15px;
+    margin:auto;
 }
 
 td{
-    border:1px solid #eee;
-    width:60px;
-    height:30px;
+    width:43px;
+    border:1px solid #e0e0e0;
+    padding:0px;
     text-align:center;
-    font-size:13px;
+    font-size:14px;
+    height:20px;
 }
-
-/* BLOQUE DETALLE */
-.detalle{
-    width:60%;
-    margin:auto;
-    background:white;
-    padding:15px;
-    border-radius:10px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+tr:nth-child(even) td{
+    background:#f8f9fa;
+}
+.datos{
+    display:grid;
+    grid-template-columns: repeat(2, auto);
+    gap:8px;
+    font-size:14px;
     margin-top:10px;
 }
 
-.detalle p{
-    margin:6px 0;
-    font-size:14px;
+.datos div{
+    background:#f4f6f9;
+    padding:8px;
+    border-radius:8px;
 }
 
-hr{
+button{
+    background:#3498db;
+    color:white;
     border:none;
-    border-top:1px solid #ddd;
-    margin:25px 0;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
 }
 
-/* BOTÓN */
+button:hover{
+    background:#2c80b4;
+}
+
 .center{
     text-align:center;
     margin-top:25px;
 }
 
-button{
-    padding:10px 18px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    background:#27ae60;
-    color:white;
-    font-size:14px;
-    transition:0.2s;
+.comercial td{
+    background:#ff6ac6 !important;
 }
 
-button:hover{
-    background:#219150;
+.pardo td{
+    background:#27ae60 !important;
 }
+
+.jumbo td{
+    background:#e67e22 !important;
+}
+
+.contenedor-detalles{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* clave */
+    gap: 12px;
+    align-items: flex-start;
+}
+
+
 
 </style>
 
@@ -122,25 +137,27 @@ button:hover{
 
 <body>
 
-<div class="container">
+
 
 <h1>LIQUIDACIÓN DE VENTA</h1>
 
-<div class="info">
+<div class="cabecera">
     <p><span class="label">Fecha:</span> {{ cabecera[0] }}</p>
     <p><span class="label">Cliente:</span> {{ cabecera[1] }}</p>
     <p><span class="label">Importe Total:</span> S/ {{ cabecera[2] }}</p>
 </div>
 
-<hr>
+<div class="contenedor-detalles">
 
 {% for d in detalles %}
+
+<div class="detalle">
 
 <h2>{{ d.tipo_huevo }}</h2>
 
 <table>
 {% for fila in d.tabla %}
-<tr>
+        <tr {% if loop.last %}class="fila-total {{ d.tipo_huevo|lower }}"{% endif %}>
     {% for peso in fila %}
     <td>{{ peso }}</td>
     {% endfor %}
@@ -148,7 +165,7 @@ button:hover{
 {% endfor %}
 </table>
 
-<div class="detalle">
+<div class="datos">
 
 <p><b>Precio Kg:</b> {{ d.precio_kg }}</p>
 <p><b>Peso Total:</b> {{ d.peso_total }}</p>
@@ -156,10 +173,11 @@ button:hover{
 <p><b>Importe:</b> S/ {{ d.importe }}</p>
 
 </div>
-
-<hr>
+</div>
 
 {% endfor %}
+
+</div>
 
 <div class="center">
     <button onclick="window.location.href='/'">
