@@ -199,24 +199,17 @@
         }
 
         .header{
-    max-width:1200px;
-    margin:auto;
-}
+            max-width: 900px;
+            margin: auto;
+            text-align: center;
+        }
 
-.header-cards{
-    display:flex;
-    gap:15px;
-    justify-content:center;
-    align-items:flex-start;
-}
-
-.subcard{
-    flex:1;
-    margin-top:0;
-    background:#fff;
-    border-radius:12px;
-    padding:15px;
-}
+        .subcard{
+            background: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+        }
 
         .row{
             display: flex;
