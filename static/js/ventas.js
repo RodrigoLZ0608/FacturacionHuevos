@@ -152,21 +152,30 @@ function calcular(){
     totalPardo += Number(x.value) || 0;
 });
 
-    document.getElementById("pesoTotalComercial").value = totalComercial.toFixed(2);
-    document.getElementById("pesoTotalJumbo").value = totalJumbo.toFixed(2);
-    document.getElementById("pesoTotalPardo").value = totalPardo.toFixed(2);
+    document.getElementById("pesoTotalComercial").value = 
+    totalComercial.toFixed(2);
+    document.getElementById("pesoTotalJumbo").value = 
+    totalJumbo.toFixed(2);
+    document.getElementById("pesoTotalPardo").value = 
+    totalPardo.toFixed(2);
 
-    let precioComercial = Number(document.getElementById("precioComercial").value)||0;
-    let precioJumbo = Number(document.getElementById("precioJumbo").value)||0;
-    let precioPardo = Number(document.getElementById("precioPardo").value)||0;
+    let precioComercial = 
+    Number(document.getElementById("precioComercial").value)||0;
+    let precioJumbo = 
+    Number(document.getElementById("precioJumbo").value)||0;
+    let precioPardo = 
+    Number(document.getElementById("precioPardo").value)||0;
 
     let importeComercial = totalComercial * precioComercial;
     let importeJumbo = totalJumbo * precioJumbo;
     let importePardo = totalPardo * precioPardo;
 
-    document.getElementById("importeComercial").value = importeComercial.toFixed(2);
-    document.getElementById("importeJumbo").value = importeJumbo.toFixed(2);
-    document.getElementById("importePardo").value = importePardo.toFixed(2);
+    document.getElementById("importeComercial").value = 
+    importeComercial.toFixed(2);
+    document.getElementById("importeJumbo").value = 
+    importeJumbo.toFixed(2);
+    document.getElementById("importePardo").value = 
+    importePardo.toFixed(2);
 
     document.getElementById("importeGeneral").value =
         (importeComercial + importeJumbo + importePardo).toFixed(2);
