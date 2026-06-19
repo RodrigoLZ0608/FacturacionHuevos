@@ -416,3 +416,75 @@
     box-shadow:none !important;
 
 }
+
+/* PANEL TOTAL COMPACTO */
+
+#panelTotal{
+
+    background:white;
+
+    border-radius:12px;
+
+    padding:12px;
+
+    width:130px;
+
+    min-width:130px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    height:fit-content;
+}
+
+/* TITULO */
+
+#panelTotal h3{
+
+    margin:0 0 10px 0;
+
+    font-size:15px;
+
+    color:#2c3e50;
+}
+
+/* IMPORTE */
+
+#panelTotal input{
+
+    width:100px;
+
+    height:35px;
+
+    text-align:center;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    color:#27ae60;
+
+    background:#f8f9fa;
+}
+
+/* BOTON */
+
+#panelTotal button{
+
+    margin-top:10px;
+
+    width:100px;
+
+    padding:8px;
+
+    background:#27ae60;
+
+    color:white;
+
+    font-size:13px;
+}
